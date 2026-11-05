@@ -1,12 +1,23 @@
-# Photo Design Gallery
+# Photo Design Gallery & Project Reports
 
-Collection of photo designs, marketing materials, and photo transformations.
+Collection of project reports, marketing materials, and photo designs.
+
+---
+
+## 🏫 Construction Progress Report (Excel)
+
+- **File:** [`Bagbag_Integrated_School_Progress_Report.xlsx`](Bagbag_Integrated_School_Progress_Report.xlsx)
+- **Project:** Bagbag Integrated School - Ongoing Infrastructure & Site Development
+- **Highlights:**
+  - **Overall Physical Progress:** 66.2%
+  - **Perimeter Site Development Progress:** 73.3%
+  - **Roofing Works Progress:** 75.5%
+  - **Status:** +2.5% Slippage (On Track / Ahead of Schedule)
+- **Features:** 3 dynamic worksheets (`Executive Summary`, `Detailed Work Breakdown`, `Weekly Progress Log`), automated formulas, KPI cards, and manpower logs.
 
 ---
 
 ## 🎯 Tactical Sniper Transformation
-
-Cinematic special forces sniper transformation based on tropical coastal photography:
 
 | Preview | Filename | Description |
 | :---: | :--- | :--- |
