@@ -7,9 +7,12 @@ Collection of architectural 3D models, business systems, engineering reports, an
 ## 🏛️ Kalibo Project - Interior 3D Renderings & SketchUp Model
 
 - **SketchUp Model:** [`Kalibo_Project_Interior_Rendered.skp`](Kalibo_Project_Interior_Rendered.skp)
-- **Renderings:**
-  - **Warm Evening Ambient Lighting:** [`Kalibo_Interior_Render_Evening.jpg`](Kalibo_Interior_Render_Evening.jpg) — Glowing double tray ceiling cove lighting, integrated canopy LED strip light, backlit bar display shelving, and walnut/marble finishes.
-  - **Bright Scandinavian Daytime:** [`Kalibo_Interior_Render_Daytime.jpg`](Kalibo_Interior_Render_Daytime.jpg) — Natural daylighting, fluted wood slats on counter, and airy modern aesthetics.
+- **Living & Dining Area (New Angle):**
+  - **Warm Evening Ambient Glow:** [`Kalibo_Living_Dining_Render_Evening.jpg`](Kalibo_Living_Dining_Render_Evening.jpg) — Walnut wood-frame lounge seating, nesting coffee tables, geometric dining set, sculptural branch chandelier, and horse wall art with recessed cove lighting.
+  - **Bright Natural Daytime:** [`Kalibo_Living_Dining_Render_Daytime.jpg`](Kalibo_Living_Dining_Render_Daytime.jpg) — Sunlit Scandinavian/Japandi interior with natural daylight and corridor garden view.
+- **Bar Counter & Kitchen Area:**
+  - **Warm Evening:** [`Kalibo_Interior_Render_Evening.jpg`](Kalibo_Interior_Render_Evening.jpg) — Custom wooden bar counter with canopy strip light and backlit bar shelving.
+  - **Bright Daytime:** [`Kalibo_Interior_Render_Daytime.jpg`](Kalibo_Interior_Render_Daytime.jpg) — Fluted wood paneling with Calacatta quartz countertop.
 
 ---
 
@@ -29,17 +32,13 @@ Collection of architectural 3D models, business systems, engineering reports, an
 
 ## 🎯 Tactical Sniper Transformation
 
-| Preview | Filename | Description |
-| :---: | :--- | :--- |
-| ![Sniper Operator](Tactical_Sniper_Operator.jpg) | `Tactical_Sniper_Operator.jpg` | Elite tactical sniper overlooking tropical coast. |
-| ![Sniper Nest](Tactical_Sniper_Nest_Aiming.jpg) | `Tactical_Sniper_Nest_Aiming.jpg` | Concealed jungle vantage point aiming through heavy optical scope. |
+- [`Tactical_Sniper_Operator.jpg`](Tactical_Sniper_Operator.jpg)
+- [`Tactical_Sniper_Nest_Aiming.jpg`](Tactical_Sniper_Nest_Aiming.jpg)
 
 ---
 
 ## ☕ RR Coffee Vendo - A4 Commercial Signage
 
-| Preview | Filename | Description |
-| :---: | :--- | :--- |
-| ![Dynamic Splash](RR_Coffee_A4_Dynamic_Splash.jpg) | `RR_Coffee_A4_Dynamic_Splash.jpg` | High-energy beverage commercial with crown splash. |
-| ![Modern Cafe Luxe](RR_Coffee_A4_Modern_Cafe_Luxe.jpg) | `RR_Coffee_A4_Modern_Cafe_Luxe.jpg` | Layered double-walled glass latte mug. |
-| ![Commercial A4 Signage](RR_Coffee_A4_Commercial_Signage.jpg) | `RR_Coffee_A4_Commercial_Signage.jpg` | Classic Studio advertising poster. |
+- [`RR_Coffee_A4_Dynamic_Splash.jpg`](RR_Coffee_A4_Dynamic_Splash.jpg)
+- [`RR_Coffee_A4_Modern_Cafe_Luxe.jpg`](RR_Coffee_A4_Modern_Cafe_Luxe.jpg)
+- [`RR_Coffee_A4_Commercial_Signage.jpg`](RR_Coffee_A4_Commercial_Signage.jpg)
