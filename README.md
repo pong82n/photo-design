@@ -1,18 +1,25 @@
 # Photo Design Gallery, Project Reports & Architectural Renders
 
-Collection of architectural 3D models, business systems, engineering reports, and photo designs.
+Collection of architectural 3D models, 3D floor plans, business systems, engineering reports, and photo designs.
+
+---
+
+## 📐 3D Floor Plan & Modern Interior Architectural Rendering
+
+- **3D Cutaway Floor Plan:** [`3D_Cutaway_Floor_Plan.jpg`](3D_Cutaway_Floor_Plan.jpg) — High-resolution isometric cutaway 3D floor plan showing all rooms furnished (Carport, Mudroom, Living/Dining, Kitchen with Waterfall Island, Master Suite with Walk-in Closet & Tub, Bedrooms 1 & 2, and Lanai).
+- **Eye-Level Modern Interior Render:** [`Modern_Interior_Render_Living_Dining.jpg`](Modern_Interior_Render_Living_Dining.jpg) — Photorealistic eye-level view of the open-concept Kitchen island, dining table, fluted wood TV wall, and sliding glass doors opening to the lush lanai.
 
 ---
 
 ## 🏛️ Kalibo Project - Interior 3D Renderings & SketchUp Model
 
 - **SketchUp Model:** [`Kalibo_Project_Interior_Rendered.skp`](Kalibo_Project_Interior_Rendered.skp)
-- **Living & Dining Area (New Angle):**
-  - **Warm Evening Ambient Glow:** [`Kalibo_Living_Dining_Render_Evening.jpg`](Kalibo_Living_Dining_Render_Evening.jpg) — Walnut wood-frame lounge seating, nesting coffee tables, geometric dining set, sculptural branch chandelier, and horse wall art with recessed cove lighting.
-  - **Bright Natural Daytime:** [`Kalibo_Living_Dining_Render_Daytime.jpg`](Kalibo_Living_Dining_Render_Daytime.jpg) — Sunlit Scandinavian/Japandi interior with natural daylight and corridor garden view.
-- **Bar Counter & Kitchen Area:**
-  - **Warm Evening:** [`Kalibo_Interior_Render_Evening.jpg`](Kalibo_Interior_Render_Evening.jpg) — Custom wooden bar counter with canopy strip light and backlit bar shelving.
-  - **Bright Daytime:** [`Kalibo_Interior_Render_Daytime.jpg`](Kalibo_Interior_Render_Daytime.jpg) — Fluted wood paneling with Calacatta quartz countertop.
+- **Living & Dining Area:**
+  - [`Kalibo_Living_Dining_Render_Evening.jpg`](Kalibo_Living_Dining_Render_Evening.jpg)
+  - [`Kalibo_Living_Dining_Render_Daytime.jpg`](Kalibo_Living_Dining_Render_Daytime.jpg)
+- **Bar Counter & Kitchen Nook:**
+  - [`Kalibo_Interior_Render_Evening.jpg`](Kalibo_Interior_Render_Evening.jpg)
+  - [`Kalibo_Interior_Render_Daytime.jpg`](Kalibo_Interior_Render_Daytime.jpg)
 
 ---
 
