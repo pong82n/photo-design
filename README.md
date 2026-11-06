@@ -4,6 +4,15 @@ Collection of architectural 3D models, 3D floor plans, business systems, enginee
 
 ---
 
+## 🪪 MIRR Construction Services - Corporate Employee ID Card
+
+- **Printable & Editable Web Template:** [`MIRR_Employee_ID_Card.html`](MIRR_Employee_ID_Card.html) — Standard CR80 dimensions (54mm × 85.6mm), high-DPI print styles, live editable text, barcode, and QR code.
+- **Front Badge Graphic:** [`MIRR_Employee_ID_Front.jpg`](MIRR_Employee_ID_Front.jpg) — High-resolution front badge with MIRR branding, employee photo frame, title, ID number, and security chip.
+- **Back Badge Graphic:** [`MIRR_Employee_ID_Back.jpg`](MIRR_Employee_ID_Back.jpg) — High-resolution back badge with terms, emergency contacts, magnetic stripe, barcode, and authorization signature.
+- **Lanyard Presentation Mockup:** [`MIRR_Employee_ID_Presentation.jpg`](MIRR_Employee_ID_Presentation.jpg) — Commercial desk presentation featuring dual cards with branded lanyard ribbons.
+
+---
+
 ## 📐 3D Floor Plan & Modern Interior Architectural Rendering
 
 - **3D Cutaway Floor Plan:** [`3D_Cutaway_Floor_Plan.jpg`](3D_Cutaway_Floor_Plan.jpg) — High-resolution isometric cutaway 3D floor plan showing all rooms furnished (Carport, Mudroom, Living/Dining, Kitchen with Waterfall Island, Master Suite with Walk-in Closet & Tub, Bedrooms 1 & 2, and Lanai).

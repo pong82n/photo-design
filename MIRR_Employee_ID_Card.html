@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIRR Construction Services - Corporate Employee ID Card</title>
+<style>
+  :root {
+    --navy: #0e223d;
+    --navy-light: #1a365d;
+    --orange: #ea580c;
+    --orange-bright: #f97316;
+    --gold: #fbbf24;
+    --dark: #0f172a;
+    --gray-bg: #f8fafc;
+    --border-gray: #cbd5e1;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  body {
+    background: #e2e8f0;
+    color: #1e293b;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .header-bar {
+    max-width: 900px;
+    width: 100%;
+    margin-bottom: 24px;
+    background: white;
+    padding: 20px 28px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .header-bar h1 {
+    font-size: 20px;
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .header-bar p {
+    font-size: 13px;
+    color: #64748b;
+    margin-top: 4px;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn {
+    padding: 9px 18px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s ease;
+  }
+
+  .btn-primary {
+    background: var(--navy);
+    color: white;
+  }
+  .btn-primary:hover {
+    background: var(--navy-light);
+  }
+
+  .btn-orange {
+    background: var(--orange);
+    color: white;
+  }
+  .btn-orange:hover {
+    background: #c2410c;
+  }
+
+  /* CR80 Standard ID Card dimensions: 53.98mm x 85.60mm (Portrait) */
+  /* Screen display scale: 320px x 508px (approx 3.78px/mm) */
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 36px;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+
+  .card-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card-label {
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #475569;
+  }
+
+  .id-card {
+    width: 324px;
+    height: 514px;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18), 0 1px 3px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #cbd5e1;
+  }
+
+  /* Slot punch indicator at top */
+  .slot-punch {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 38px;
+    height: 7px;
+    background: #e2e8f0;
+    border: 1px dashed #94a3b8;
+    border-radius: 4px;
+    z-index: 20;
+    opacity: 0.6;
+  }
+
+  /* ================= FRONT SIDE ================= */
+  .front-card {
+    background: linear-gradient(180deg, #0e223d 0%, #153258 26%, #ffffff 26.5%, #ffffff 100%);
+  }
+
+  .front-header {
+    height: 136px;
+    padding: 22px 16px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    color: white;
+  }
+
+  .brand-logo-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 2px;
+  }
+
+  .logo-icon-svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .brand-title {
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+    line-height: 1.1;
+  }
+
+  .brand-title span {
+    color: var(--orange-bright);
+  }
+
+  .brand-subtitle {
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1.8px;
+    color: #cbd5e1;
+    margin-top: 3px;
+    font-weight: 600;
+  }
+
+  /* Orange accent stripe */
+  .accent-stripe {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #ea580c 0%, #f97316 50%, #fbbf24 100%);
+  }
+
+  .front-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 18px 8px;
+  }
+
+  /* Photo Frame */
+  .photo-frame {
+    width: 120px;
+    height: 138px;
+    border-radius: 8px;
+    border: 3px solid var(--orange);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    overflow: hidden;
+    background: #f1f5f9;
+    position: relative;
+    margin-top: -6px;
+  }
+
+  .photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .employee-name {
+    margin-top: 10px;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--navy);
+    text-align: center;
+    letter-spacing: 0.3px;
+  }
+
+  .employee-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-top: 2px;
+    text-align: center;
+  }
+
+  .employee-dept {
+    font-size: 9.5px;
+    color: #64748b;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 1px;
+  }
+
+  /* Info Grid */
+  .info-grid {
+    width: 100%;
+    margin-top: 10px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 6px 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 8px;
+    font-size: 9.5px;
+  }
+
+  .info-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .info-label {
+    font-size: 7.5px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #64748b;
+    letter-spacing: 0.5px;
+  }
+
+  .info-val {
+    font-weight: 800;
+    color: var(--dark);
+    font-size: 10px;
+  }
+
+  /* Barcode section */
+  .barcode-section {
+    width: 100%;
+    margin-top: auto;
+    padding-top: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .barcode-bars {
+    display: flex;
+    gap: 2px;
+    height: 24px;
+    align-items: stretch;
+  }
+
+  .barcode-bars div {
+    background: #0f172a;
+    border-radius: 0.5px;
+  }
+
+  .barcode-num {
+    font-family: monospace;
+    font-size: 8.5px;
+    color: #475569;
+    letter-spacing: 2px;
+    margin-top: 2px;
+    font-weight: 700;
+  }
+
+  /* Bottom Security Stripe */
+  .bottom-strip {
+    height: 8px;
+    background: linear-gradient(90deg, var(--navy) 0%, var(--navy-light) 60%, var(--orange) 100%);
+    width: 100%;
+  }
+
+  /* ================= BACK SIDE ================= */
+  .back-card {
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .back-header {
+    background: var(--navy);
+    color: white;
+    padding: 18px 14px 8px;
+    text-align: center;
+    border-bottom: 3px solid var(--orange);
+  }
+
+  .back-header h3 {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+
+  .back-body {
+    flex: 1;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    font-size: 8.5px;
+    color: #334155;
+    line-height: 1.35;
+  }
+
+  .terms-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+
+  .terms-box ol {
+    padding-left: 14px;
+  }
+
+  .terms-box li {
+    margin-bottom: 4px;
+    font-size: 8px;
+  }
+
+  .emergency-box {
+    border: 1px dashed var(--orange);
+    background: #fff7ed;
+    border-radius: 6px;
+    padding: 6px 8px;
+    margin-bottom: 10px;
+  }
+
+  .emergency-title {
+    font-weight: 800;
+    color: #c2410c;
+    font-size: 8.5px;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .emergency-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 8px;
+    margin-top: 2px;
+  }
+
+  .sig-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: auto;
+    padding-bottom: 6px;
+    gap: 12px;
+  }
+
+  .sig-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sig-line {
+    width: 100%;
+    border-bottom: 1px solid #0f172a;
+    height: 22px;
+    margin-bottom: 2px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .sig-line span {
+    font-family: 'Brush Script MT', cursive, sans-serif;
+    font-size: 14px;
+    color: #1e3a8a;
+  }
+
+  .sig-caption {
+    font-size: 7px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #64748b;
+    text-align: center;
+  }
+
+  .qr-box {
+    width: 58px;
+    height: 58px;
+    background: white;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    padding: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .qr-box svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .company-footer {
+    background: #0f172a;
+    color: #cbd5e1;
+    font-size: 7.5px;
+    text-align: center;
+    padding: 6px 10px;
+    line-height: 1.3;
+  }
+
+  .company-footer strong {
+    color: white;
+  }
+
+  /* PRINT SPECIFICATIONS - EXACT CR80 CARD SIZE (54mm x 85.6mm) */
+  @media print {
+    body {
+      background: white;
+      padding: 0;
+      margin: 0;
+    }
+
+    .header-bar, .mockup-preview-section {
+      display: none !important;
+    }
+
+    .card-container {
+      margin: 0;
+      gap: 10mm;
+      page-break-inside: avoid;
+    }
+
+    .card-wrap {
+      page-break-inside: avoid;
+    }
+
+    .card-label {
+      display: none;
+    }
+
+    .id-card {
+      width: 54mm !important;
+      height: 85.6mm !important;
+      border: 0.2mm solid #cbd5e1 !important;
+      box-shadow: none !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    @page {
+      size: portrait;
+      margin: 10mm;
+    }
+  }
+
+  .mockup-preview-section {
+    max-width: 900px;
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  .mockup-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 16px;
+  }
+
+  .mockup-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center;
+    padding: 10px;
+    background: #f8fafc;
+  }
+
+  .mockup-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  .mockup-card h4 {
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--navy);
+  }
+</style>
+</head>
+<body>
+
+  <!-- Top Action Header -->
+  <div class="header-bar">
+    <div>
+      <h1>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="16" rx="2"/>
+          <circle cx="9" cy="10" r="2"/>
+          <line x1="15" y1="8" x2="17" y2="8"/>
+          <line x1="15" y1="12" x2="17" y2="12"/>
+          <line x1="7" y1="16" x2="17" y2="16"/>
+        </svg>
+        MIRR Construction Services — Corporate Employee ID Card
+      </h1>
+      <p>Standard CR80 Size (54mm × 85.6mm) • High DPI Print Ready • Fully Editable Template</p>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="window.print()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Print ID Cards
+      </button>
+      <a class="btn btn-orange" href="MIRR_Employee_ID_Front.jpg" download>
+        Download Front High-Res
+      </a>
+      <a class="btn btn-orange" href="MIRR_Employee_ID_Back.jpg" download>
+        Download Back High-Res
+      </a>
+    </div>
+  </div>
+
+  <!-- Printable Dual Cards (Front & Back) -->
+  <div class="card-container">
+
+    <!-- FRONT SIDE -->
+    <div class="card-wrap">
+      <div class="card-label">Front Side (CR80 Portrait)</div>
+      <div class="id-card front-card" id="id-front">
+        <div class="slot-punch" title="Lanyard Hole Punch Slot"></div>
+        
+        <!-- Header -->
+        <div class="front-header">
+          <div class="brand-logo-row">
+            <svg class="logo-icon-svg" viewBox="0 0 100 100">
+              <polygon points="50,5 95,30 95,75 50,95 5,75 5,30" fill="none" stroke="#ea580c" stroke-width="6"/>
+              <path d="M 25 70 L 25 35 L 42 55 L 58 35 L 58 70" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="75" cy="40" r="7" fill="#ea580c"/>
+              <line x1="75" y1="47" x2="75" y2="70" stroke="#ea580c" stroke-width="7" stroke-linecap="round"/>
+            </svg>
+            <div style="text-align: left;">
+              <div class="brand-title">MIRR <span>CONSTRUCTION</span></div>
+              <div class="brand-subtitle">SERVICES & ENGINEERING</div>
+            </div>
+          </div>
+          <div class="accent-stripe"></div>
+        </div>
+
+        <!-- Body -->
+        <div class="front-body">
+          <div class="photo-frame">
+            <!-- Professional portrait placeholder / replacement -->
+            <svg width="100%" height="100%" viewBox="0 0 120 140" fill="#cbd5e1">
+              <rect width="120" height="140" fill="#e2e8f0"/>
+              <circle cx="60" cy="50" r="26" fill="#94a3b8"/>
+              <path d="M 20 125 C 20 90, 40 85, 60 85 C 80 85, 100 90, 100 125 Z" fill="#94a3b8"/>
+              <rect x="52" y="70" width="16" height="40" fill="#0e223d" rx="2"/>
+              <polygon points="52,80 60,95 68,80" fill="#ea580c"/>
+            </svg>
+          </div>
+
+          <div class="employee-name" contenteditable="true">ENGR. MARK ERICKSON</div>
+          <div class="employee-title" contenteditable="true">PROJECT SITE ENGINEER</div>
+          <div class="employee-dept" contenteditable="true">Electronics &amp; Communications / Site Ops</div>
+
+          <!-- Info Grid -->
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-label">Employee ID</span>
+              <span class="info-val" contenteditable="true">MCS-2026-0188</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Blood Type</span>
+              <span class="info-val" contenteditable="true" style="color:#dc2626;">O+</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Date Issued</span>
+              <span class="info-val" contenteditable="true">NOV 2026</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Valid Until</span>
+              <span class="info-val" contenteditable="true">NOV 2028</span>
+            </div>
+          </div>
+
+          <!-- Barcode -->
+          <div class="barcode-section">
+            <div class="barcode-bars">
+              <div style="width:3px;"></div><div style="width:1px; background:none;"></div>
+              <div style="width:2px;"></div><div style="width:2px; background:none;"></div>
+              <div style="width:4px;"></div><div style="width:1px; background:none;"></div>
+              <div style="width:1px;"></div><div style="width:2px; background:none;"></div>
+              <div style="width:3px;"></div><div style="width:1px; background:none;"></div>
+              <div style="width:2px;"></div><div style="width:3px; background:none;"></div>
+              <div style="width:4px;"></div><div style="width:1px; background:none;"></div>
+              <div style="width:2px;"></div><div style="width:1px; background:none;"></div>
+              <div style="width:3px;"></div><div style="width:2px; background:none;"></div>
+              <div style="width:1px;"></div><div style="width:2px; background:none;"></div>
+              <div style="width:4px;"></div><div style="width:1px; background:none;"></div>
+              <div style="width:2px;"></div><div style="width:2px; background:none;"></div>
+              <div style="width:3px;"></div><div style="width:1px; background:none;"></div>
+              <div style="width:4px;"></div><div style="width:2px; background:none;"></div>
+              <div style="width:2px;"></div><div style="width:1px; background:none;"></div>
+              <div style="width:3px;"></div><div style="width:2px; background:none;"></div>
+              <div style="width:1px;"></div><div style="width:1px; background:none;"></div>
+              <div style="width:4px;"></div><div style="width:2px; background:none;"></div>
+              <div style="width:2px;"></div><div style="width:1px; background:none;"></div>
+              <div style="width:3px;"></div><div style="width:1px; background:none;"></div>
+              <div style="width:2px;"></div><div style="width:2px; background:none;"></div>
+              <div style="width:4px;"></div><div style="width:1px; background:none;"></div>
+              <div style="width:2px;"></div><div style="width:2px; background:none;"></div>
+              <div style="width:3px;"></div>
+            </div>
+            <div class="barcode-num">*MCS20260188*</div>
+          </div>
+        </div>
+
+        <div class="bottom-strip"></div>
+      </div>
+    </div>
+
+    <!-- BACK SIDE -->
+    <div class="card-wrap">
+      <div class="card-label">Back Side (CR80 Portrait)</div>
+      <div class="id-card back-card" id="id-back">
+        <div class="slot-punch" title="Lanyard Hole Punch Slot"></div>
+
+        <div class="back-header">
+          <h3>Terms of Identification</h3>
+        </div>
+
+        <div class="back-body">
+          <div class="terms-box">
+            <ol>
+              <li>This card is the official property of <strong>MIRR Construction Services</strong> and must be worn inside company and project site premises at all times.</li>
+              <li>Non-transferable. Any unauthorized possession or misuse will be subject to disciplinary action.</li>
+              <li>If found, please return to MIRR Construction Services Central Office or surrender to security.</li>
+            </ol>
+          </div>
+
+          <!-- Emergency Notification -->
+          <div class="emergency-box">
+            <div class="emergency-title">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L1 21h22L12 2zm1 14h-2v-2h2v2zm0-4h-2V8h2v4z"/>
+              </svg>
+              In Case of Emergency Notify:
+            </div>
+            <div class="emergency-row">
+              <span style="font-weight:700;">Contact:</span>
+              <span contenteditable="true">Emergency Contact Person</span>
+            </div>
+            <div class="emergency-row">
+              <span style="font-weight:700;">Relationship:</span>
+              <span contenteditable="true">Spouse / Family</span>
+            </div>
+            <div class="emergency-row">
+              <span style="font-weight:700;">Mobile No:</span>
+              <span contenteditable="true" style="font-weight:700; color:#0e223d;">+63 917 000 0000</span>
+            </div>
+            <div class="emergency-row">
+              <span style="font-weight:700;">Site Station:</span>
+              <span contenteditable="true">Metro Manila / Region IV-A</span>
+            </div>
+          </div>
+
+          <!-- Official Signature & QR Verification -->
+          <div class="sig-section">
+            <div class="sig-col">
+              <div class="sig-line">
+                <span>M. Erickson</span>
+              </div>
+              <div class="sig-caption">Employee Signature</div>
+            </div>
+
+            <div class="qr-box">
+              <svg viewBox="0 0 100 100">
+                <!-- QR Corner Markers -->
+                <rect x="5" y="5" width="28" height="28" fill="#0e223d" rx="3"/>
+                <rect x="11" y="11" width="16" height="16" fill="white" rx="1"/>
+                <rect x="15" y="15" width="8" height="8" fill="#ea580c"/>
+                
+                <rect x="67" y="5" width="28" height="28" fill="#0e223d" rx="3"/>
+                <rect x="73" y="11" width="16" height="16" fill="white" rx="1"/>
+                <rect x="77" y="15" width="8" height="8" fill="#ea580c"/>
+
+                <rect x="5" y="67" width="28" height="28" fill="#0e223d" rx="3"/>
+                <rect x="11" y="73" width="16" height="16" fill="white" rx="1"/>
+                <rect x="15" y="77" width="8" height="8" fill="#ea580c"/>
+
+                <!-- QR Matrix Dots -->
+                <rect x="38" y="10" width="6" height="6" fill="#0e223d"/>
+                <rect x="48" y="10" width="6" height="6" fill="#0e223d"/>
+                <rect x="38" y="24" width="6" height="6" fill="#ea580c"/>
+                <rect x="50" y="24" width="6" height="6" fill="#0e223d"/>
+
+                <rect x="10" y="42" width="6" height="6" fill="#0e223d"/>
+                <rect x="22" y="42" width="6" height="6" fill="#ea580c"/>
+                <rect x="36" y="38" width="8" height="8" fill="#0e223d"/>
+                <rect x="48" y="38" width="6" height="6" fill="#0e223d"/>
+                <rect x="58" y="42" width="6" height="6" fill="#ea580c"/>
+                <rect x="72" y="38" width="8" height="8" fill="#0e223d"/>
+                <rect x="84" y="42" width="6" height="6" fill="#0e223d"/>
+
+                <rect x="38" y="52" width="6" height="6" fill="#0e223d"/>
+                <rect x="48" y="52" width="8" height="8" fill="#ea580c"/>
+                <rect x="62" y="52" width="6" height="6" fill="#0e223d"/>
+
+                <rect x="38" y="68" width="6" height="6" fill="#0e223d"/>
+                <rect x="48" y="68" width="6" height="6" fill="#0e223d"/>
+                <rect x="38" y="80" width="8" height="8" fill="#0e223d"/>
+                <rect x="52" y="80" width="6" height="6" fill="#ea580c"/>
+                <rect x="68" y="68" width="6" height="6" fill="#0e223d"/>
+                <rect x="80" y="68" width="8" height="8" fill="#0e223d"/>
+                <rect x="68" y="82" width="8" height="8" fill="#ea580c"/>
+                <rect x="82" y="82" width="6" height="6" fill="#0e223d"/>
+              </svg>
+            </div>
+
+            <div class="sig-col">
+              <div class="sig-line">
+                <span style="font-family:sans-serif; font-size:10px; font-weight:700; color:#0e223d;">MIRR AUTH</span>
+              </div>
+              <div class="sig-caption">Authorized Officer</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="company-footer">
+          <strong>MIRR CONSTRUCTION SERVICES</strong><br>
+          General Contractor • Civil &amp; Electro-Mechanical Works<br>
+          Tel: (02) 8800-MIRR • Email: info@mirrconstruction.ph
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- High-Res Graphic Mockups Section -->
+  <div class="mockup-preview-section">
+    <h3 style="color: var(--navy); margin-bottom: 6px; font-size: 16px;">Rendered High-Resolution Badge Mockups (Front & Back)</h3>
+    <p style="font-size: 13px; color: #64748b;">
+      Click on any image to open full resolution for direct PVC thermal transfer or card press printing:
+    </p>
+    <div class="mockup-grid">
+      <div class="mockup-card">
+        <a href="MIRR_Employee_ID_Front.jpg" target="_blank">
+          <img src="MIRR_Employee_ID_Front.jpg" alt="MIRR Employee ID Front">
+        </a>
+        <h4>Front Badge Preview</h4>
+      </div>
+      <div class="mockup-card">
+        <a href="MIRR_Employee_ID_Back.jpg" target="_blank">
+          <img src="MIRR_Employee_ID_Back.jpg" alt="MIRR Employee ID Back">
+        </a>
+        <h4>Back Badge Preview</h4>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
