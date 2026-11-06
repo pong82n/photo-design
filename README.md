@@ -4,6 +4,17 @@ Collection of architectural 3D models, 3D floor plans, business systems, enginee
 
 ---
 
+## 📸 Professional Corporate ID Photo & Printable Package — Engr. Raffy T. Soguilon
+
+- **Professional Studio Headshot:** [`Professional_ID_Photo.jpg`](Professional_ID_Photo.jpg) / [`Engr_Raffy_Soguilon_Professional_ID_Photo.jpg`](Engr_Raffy_Soguilon_Professional_ID_Photo.jpg) — High-resolution studio portrait in tailored corporate navy suit, white dress shirt, and executive tie with 3-point lighting against a neutral gradient backdrop.
+- **Printable ID Photos Sheet:** [`Printable_ID_Photos_Sheet.html`](Printable_ID_Photos_Sheet.html) — Standard A4 photo paper layout with precision cut guides:
+  - 4 copies of **2" × 2"** (Passport Size) — plain & with name tag ("ENGR. RAFFY T. SOGUILON")
+  - 4 copies of **Philippine Passport / PRC Size (35mm × 45mm)**
+  - 6 copies of **1" × 1"** ID size
+  - One-click print styling (`Ctrl + P`) at 100% true scale.
+
+---
+
 ## 🪪 MIRR Construction Services — 2026 Modern Edition Corporate ID Card
 
 - **Printable & Editable Web Template:** [`MIRR_Employee_ID_Card.html`](MIRR_Employee_ID_Card.html) — Ultra-modern dark obsidian aesthetic with frosted glass elements, biometric badge indicators, standard CR80 dimensions (54mm × 85.6mm), and true-scale print styling (`Ctrl + P`).
