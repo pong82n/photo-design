@@ -4,12 +4,12 @@ Collection of architectural 3D models, 3D floor plans, business systems, enginee
 
 ---
 
-## 🪪 MIRR Construction Services - Corporate Employee ID Card
+## 🪪 MIRR Construction Services — 2026 Modern Edition Corporate ID Card
 
-- **Printable & Editable Web Template:** [`MIRR_Employee_ID_Card.html`](MIRR_Employee_ID_Card.html) — Standard CR80 dimensions (54mm × 85.6mm), high-DPI print styles, live editable text, barcode, and QR code.
-- **Front Badge Graphic:** [`MIRR_Employee_ID_Front.jpg`](MIRR_Employee_ID_Front.jpg) — High-resolution front badge with MIRR branding, employee photo frame, title, ID number, and security chip.
-- **Back Badge Graphic:** [`MIRR_Employee_ID_Back.jpg`](MIRR_Employee_ID_Back.jpg) — High-resolution back badge with terms, emergency contacts, magnetic stripe, barcode, and authorization signature.
-- **Lanyard Presentation Mockup:** [`MIRR_Employee_ID_Presentation.jpg`](MIRR_Employee_ID_Presentation.jpg) — Commercial desk presentation featuring dual cards with branded lanyard ribbons.
+- **Printable & Editable Web Template:** [`MIRR_Employee_ID_Card.html`](MIRR_Employee_ID_Card.html) — Ultra-modern dark obsidian aesthetic with frosted glass elements, biometric badge indicators, standard CR80 dimensions (54mm × 85.6mm), and true-scale print styling (`Ctrl + P`).
+- **Modern Front Badge Graphic:** [`MIRR_Modern_ID_Front.jpg`](MIRR_Modern_ID_Front.jpg) / [`MIRR_Employee_ID_Front.jpg`](MIRR_Employee_ID_Front.jpg) — High-tech vertical badge featuring Engr. Raffy T. Soguilon (Project Site Engineer), smart chip pad, RFID contactless indicator, holographic seal, and 2D matrix barcode.
+- **Modern Back Badge Graphic:** [`MIRR_Modern_ID_Back.jpg`](MIRR_Modern_ID_Back.jpg) / [`MIRR_Employee_ID_Back.jpg`](MIRR_Employee_ID_Back.jpg) — Edge-to-edge magnetic stripe, frosted glass policy cards, ICE emergency dispatch, and digital site verification QR code.
+- **Executive Desk Presentation Mockup:** [`MIRR_Employee_ID_Presentation.jpg`](MIRR_Employee_ID_Presentation.jpg) — Commercial desk presentation featuring the badge with branded lanyard.
 
 ---
 
