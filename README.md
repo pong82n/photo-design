@@ -1,19 +1,22 @@
-# Photo Design Gallery, Project Reports & Business Systems
+# Photo Design Gallery, Project Reports & Architectural Renders
 
-Collection of business systems, engineering reports, marketing materials, and photo designs.
+Collection of architectural 3D models, business systems, engineering reports, and photo designs.
+
+---
+
+## 🏛️ Kalibo Project - Interior 3D Renderings & SketchUp Model
+
+- **SketchUp Model:** [`Kalibo_Project_Interior_Rendered.skp`](Kalibo_Project_Interior_Rendered.skp)
+- **Renderings:**
+  - **Warm Evening Ambient Lighting:** [`Kalibo_Interior_Render_Evening.jpg`](Kalibo_Interior_Render_Evening.jpg) — Glowing double tray ceiling cove lighting, integrated canopy LED strip light, backlit bar display shelving, and walnut/marble finishes.
+  - **Bright Scandinavian Daytime:** [`Kalibo_Interior_Render_Daytime.jpg`](Kalibo_Interior_Render_Daytime.jpg) — Natural daylighting, fluted wood slats on counter, and airy modern aesthetics.
 
 ---
 
 ## 💼 MIRR Construction Services - Payroll System (Excel)
 
 - **File:** [`MIRR_Construction_Services_Payroll_System.xlsx`](MIRR_Construction_Services_Payroll_System.xlsx)
-- **Features:**
-  - **Company Logo:** Embedded high-resolution vector logo in the Payslip header.
-  - **Daily Time Record (DTR):** Time-in, Time-out, Regular hours (8h), and Overtime (OT) hours.
-  - **Meal Allowance Rule:** ₱50.00/day present (`=Days_Present * 50`), ₱0 if absent.
-  - **Statutory Deductions:** SSS, PhilHealth, Pag-IBIG (HDMF), and Withholding Tax.
-  - **Other Deductions:** Cash Advance (Vale) and Uniform/PPE/Tool deductions.
-  - **Automated Payslip:** Type any Employee ID (e.g. `MCS-001` to `MCS-010`) in cell `C8` and the entire payslip updates automatically with dynamic `VLOOKUP` formulas.
+- **Features:** Biometric late minute deductions, ₱50 meal allowance for 8 completed hours, OT pay, statutory/other deductions, and payslips with embedded company logo.
 
 ---
 
@@ -21,11 +24,6 @@ Collection of business systems, engineering reports, marketing materials, and ph
 
 - **File:** [`Bagbag_Integrated_School_Progress_Report.xlsx`](Bagbag_Integrated_School_Progress_Report.xlsx)
 - **Project:** Bagbag Integrated School - Ongoing Infrastructure & Site Development
-- **Highlights:**
-  - **Overall Physical Progress:** 66.2%
-  - **Perimeter Site Development Progress:** 73.3%
-  - **Roofing Works Progress:** 75.5%
-  - **Status:** +2.5% Slippage (On Track / Ahead of Schedule)
 
 ---
 
@@ -33,8 +31,8 @@ Collection of business systems, engineering reports, marketing materials, and ph
 
 | Preview | Filename | Description |
 | :---: | :--- | :--- |
-| ![Sniper Operator](Tactical_Sniper_Operator.jpg) | `Tactical_Sniper_Operator.jpg` | **Option 1 (Standing Operator):** Elite tactical sniper in multicam gear, plate carrier, tactical comms, and high-power scoped sniper rifle with bipod. |
-| ![Sniper Nest](Tactical_Sniper_Nest_Aiming.jpg) | `Tactical_Sniper_Nest_Aiming.jpg` | **Option 2 (Action Sniper Nest):** Concealed jungle vantage point aiming through heavy optical scope of a deployed sniper rifle. |
+| ![Sniper Operator](Tactical_Sniper_Operator.jpg) | `Tactical_Sniper_Operator.jpg` | Elite tactical sniper overlooking tropical coast. |
+| ![Sniper Nest](Tactical_Sniper_Nest_Aiming.jpg) | `Tactical_Sniper_Nest_Aiming.jpg` | Concealed jungle vantage point aiming through heavy optical scope. |
 
 ---
 
@@ -42,6 +40,6 @@ Collection of business systems, engineering reports, marketing materials, and ph
 
 | Preview | Filename | Description |
 | :---: | :--- | :--- |
-| ![Dynamic Splash](RR_Coffee_A4_Dynamic_Splash.jpg) | `RR_Coffee_A4_Dynamic_Splash.jpg` | **Dynamic Splash & Swirl:** High-energy beverage commercial with crown splash, flying beans, cinnamon sticks, liquid caramel ribbons. |
-| ![Modern Cafe Luxe](RR_Coffee_A4_Modern_Cafe_Luxe.jpg) | `RR_Coffee_A4_Modern_Cafe_Luxe.jpg` | **Modern Cafe Luxe:** Layered double-walled glass latte mug with cocoa microfoam dusting. |
-| ![Commercial A4 Signage](RR_Coffee_A4_Commercial_Signage.jpg) | `RR_Coffee_A4_Commercial_Signage.jpg` | **Classic Studio Ad:** Golden ribbon badge "100% PREMIUM BEANS • FRESHLY BREWED", latte art cup on wood. |
+| ![Dynamic Splash](RR_Coffee_A4_Dynamic_Splash.jpg) | `RR_Coffee_A4_Dynamic_Splash.jpg` | High-energy beverage commercial with crown splash. |
+| ![Modern Cafe Luxe](RR_Coffee_A4_Modern_Cafe_Luxe.jpg) | `RR_Coffee_A4_Modern_Cafe_Luxe.jpg` | Layered double-walled glass latte mug. |
+| ![Commercial A4 Signage](RR_Coffee_A4_Commercial_Signage.jpg) | `RR_Coffee_A4_Commercial_Signage.jpg` | Classic Studio advertising poster. |
