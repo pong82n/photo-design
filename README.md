@@ -4,11 +4,11 @@ Collection of architectural 3D models, 3D floor plans, business systems, enginee
 
 ---
 
-## 📸 Professional Corporate ID Photo & Printable Package — Engr. Raffy T. Soguilon
+## 📸 Professional Corporate ID Photo & Printable Package — Raffy T. Soguilon
 
-- **Professional Studio Headshot:** [`Professional_ID_Photo.jpg`](Professional_ID_Photo.jpg) / [`Engr_Raffy_Soguilon_Professional_ID_Photo.jpg`](Engr_Raffy_Soguilon_Professional_ID_Photo.jpg) — High-resolution studio portrait in tailored corporate navy suit, white dress shirt, and executive tie with 3-point lighting against a neutral gradient backdrop.
+- **Professional Studio Headshot:** [`Professional_ID_Photo.jpg`](Professional_ID_Photo.jpg) / [`Raffy_Soguilon_Professional_ID_Photo.jpg`](Professional_ID_Photo.jpg) — High-resolution studio portrait in tailored corporate attire with 3-point lighting against a neutral gradient backdrop.
 - **Printable ID Photos Sheet:** [`Printable_ID_Photos_Sheet.html`](Printable_ID_Photos_Sheet.html) — Standard A4 photo paper layout with precision cut guides:
-  - 4 copies of **2" × 2"** (Passport Size) — plain & with name tag ("ENGR. RAFFY T. SOGUILON")
+  - 4 copies of **2" × 2"** (Passport Size) — plain & with name tag ("RAFFY T. SOGUILON")
   - 4 copies of **Philippine Passport / PRC Size (35mm × 45mm)**
   - 6 copies of **1" × 1"** ID size
   - One-click print styling (`Ctrl + P`) at 100% true scale.
@@ -18,8 +18,8 @@ Collection of architectural 3D models, 3D floor plans, business systems, enginee
 ## 🪪 MIRR Construction Services — 2026 Modern Edition Corporate ID Card
 
 - **Official Company Logo:** [`MIRR_Official_Logo.jpg`](MIRR_Official_Logo.jpg) — Official corporate interlocking serif monogram (Red accent line, Black M, Green R, Crimson I, Indigo R).
-- **Printable & Editable Web Template:** [`MIRR_Employee_ID_Card.html`](MIRR_Employee_ID_Card.html) — Ultra-modern dark obsidian aesthetic with official MIRR logo, biometric badge indicators, standard CR80 dimensions (54mm × 85.6mm), and true-scale print styling (`Ctrl + P`).
-- **Modern Front Badge Graphic:** [`MIRR_Modern_ID_Front.jpg`](MIRR_Modern_ID_Front.jpg) / [`MIRR_Employee_ID_Front.jpg`](MIRR_Employee_ID_Front.jpg) — High-tech vertical badge featuring the official MIRR logo, Engr. Raffy T. Soguilon (Project In-Charge) with fitted company polo and side-part haircut, smart chip pad, RFID contactless indicator, holographic seal, and 2D matrix barcode.
+- **Printable & Editable Web Template:** [`MIRR_Employee_ID_Card.html`](MIRR_Employee_ID_Card.html) — Ultra-modern titanium slate aesthetic with official MIRR logo, biometric badge indicators, standard CR80 dimensions (54mm × 85.6mm), and true-scale print styling (`Ctrl + P`).
+- **Modern Front Badge Graphic:** [`MIRR_Modern_ID_Front.jpg`](MIRR_Modern_ID_Front.jpg) / [`MIRR_Employee_ID_Front.jpg`](MIRR_Employee_ID_Front.jpg) — High-tech vertical badge featuring the official MIRR logo, Raffy T. Soguilon (Project In-Charge) with fitted company polo, smart chip pad, RFID contactless indicator, holographic seal, and 2D matrix barcode.
 - **Modern Back Badge Graphic:** [`MIRR_Modern_ID_Back.jpg`](MIRR_Modern_ID_Back.jpg) / [`MIRR_Employee_ID_Back.jpg`](MIRR_Employee_ID_Back.jpg) — Official logo watermark, edge-to-edge magnetic stripe, frosted glass policy cards, ICE emergency dispatch, and digital site verification QR code.
 - **Executive Desk Presentation Mockup:** [`MIRR_Employee_ID_Presentation.jpg`](MIRR_Employee_ID_Presentation.jpg) — Commercial desk presentation featuring the badge with branded lanyard.
 
