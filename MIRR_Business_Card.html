@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIRR Construction Services — Official Luxury Business Card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cinzel:wght@600;700;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-main: #070a12;
+    --bg-surface: #0f1523;
+    --gold: #d4af37;
+    --gold-light: #f5e7b2;
+    --gold-glow: rgba(212, 175, 55, 0.35);
+    --cyan: #38bdf8;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --border: rgba(255, 255, 255, 0.1);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  body {
+    background: var(--bg-main);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px 80px;
+    background-image: 
+      radial-gradient(circle at 15% 10%, rgba(212, 175, 55, 0.06) 0%, transparent 50%),
+      radial-gradient(circle at 85% 90%, rgba(56, 189, 248, 0.05) 0%, transparent 50%);
+  }
+
+  /* TOP HEADER */
+  .header {
+    text-align: center;
+    max-width: 900px;
+    margin-bottom: 36px;
+  }
+
+  .badge-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(212, 175, 55, 0.12);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    color: var(--gold-light);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 30px;
+    margin-bottom: 14px;
+  }
+
+  .badge-tag span {
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--gold);
+  }
+
+  h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, #ffffff 30%, var(--gold-light) 75%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+  }
+
+  .subtitle {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ACTION TOOLBAR */
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-decoration: none;
+    border: none;
+  }
+
+  .btn-gold {
+    background: linear-gradient(135deg, #d4af37 0%, #aa820a 100%);
+    color: #070a12;
+    box-shadow: 0 4px 18px var(--gold-glow);
+  }
+
+  .btn-gold:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(212, 175, 55, 0.5);
+  }
+
+  .btn-outline {
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    border: 1px solid var(--border);
+  }
+
+  .btn-outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+  }
+
+  /* 3D INTERACTIVE FLIP CARD CONTAINER */
+  .stage-3d {
+    perspective: 1200px;
+    margin-bottom: 40px;
+  }
+
+  .flip-card {
+    width: 630px;
+    height: 360px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+  }
+
+  .flip-card.flipped {
+    transform: rotateY(180deg);
+  }
+
+  .card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 
+      0 20px 50px rgba(0, 0, 0, 0.7),
+      0 0 0 1px rgba(212, 175, 55, 0.35);
+    transition: box-shadow 0.3s;
+  }
+
+  .flip-card:hover .card-face {
+    box-shadow: 
+      0 26px 60px rgba(0, 0, 0, 0.85),
+      0 0 30px rgba(212, 175, 55, 0.4);
+  }
+
+  .card-front {
+    transform: rotateY(0deg);
+  }
+
+  .card-back {
+    transform: rotateY(180deg);
+  }
+
+  .card-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* FLIP HINT */
+  .flip-hint {
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    letter-spacing: 0.5px;
+  }
+
+  /* DUAL CARDS COMPARISON SECTION */
+  .grid-section {
+    width: 100%;
+    max-width: 1100px;
+    margin-top: 40px;
+  }
+
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--gold-light);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+
+  .card-preview-box {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .card-preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .card-preview-header h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+
+  .card-tag {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: rgba(212, 175, 55, 0.15);
+    color: var(--gold-light);
+  }
+
+  .card-img-wrap {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .card-img-wrap img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s;
+  }
+
+  .card-img-wrap:hover img {
+    transform: scale(1.02);
+  }
+
+  /* SPECIFICATIONS TABLE */
+  .spec-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 28px;
+  }
+
+  .spec-item {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .spec-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .spec-val {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gold-light);
+  }
+
+  /* PRINT STYLES */
+  @media print {
+    body {
+      background: #ffffff !important;
+      color: #000000 !important;
+      padding: 0 !important;
+    }
+    .top-navbar, .header, .toolbar, .flip-hint, .section-title, .spec-grid {
+      display: none !important;
+    }
+    .stage-3d {
+      display: none !important;
+    }
+    .grid-section {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+    }
+    .cards-grid {
+      display: block !important;
+    }
+    .card-preview-box {
+      border: 1px dashed #888888 !important;
+      background: none !important;
+      box-shadow: none !important;
+      page-break-after: always;
+      margin-bottom: 20mm;
+      padding: 10mm;
+    }
+    .card-preview-header {
+      color: #000000 !important;
+    }
+    .card-img-wrap {
+      width: 3.5in !important;
+      height: 2.0in !important;
+      box-shadow: none !important;
+      border: 1px solid #333333 !important;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .flip-card {
+      width: 100%;
+      height: 220px;
+    }
+    .cards-grid {
+      grid-template-columns: 1fr;
+    }
+    .spec-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="badge-tag"><span></span> Official Corporate Identity</div>
+    <h1>MIRR Construction Services</h1>
+    <p class="subtitle">Executive Business Card Suite &bull; Raffy T. Soguilon, Project In-Charge &bull; Standard International Format (3.5" &times; 2.0")</p>
+  </header>
+
+  <!-- ACTION TOOLBAR -->
+  <div class="toolbar">
+    <button class="btn btn-gold" onclick="flipCard()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 2v6h-6"></path><path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path><path d="M3 22v-6h6"></path><path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path></svg>
+      Flip Card (Front / Back)
+    </button>
+    <a class="btn btn-outline" href="MIRR_Business_Card_Front.jpg" download>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+      Download Front (300 DPI)
+    </a>
+    <a class="btn btn-outline" href="MIRR_Business_Card_Back.jpg" download>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+      Download Back (300 DPI)
+    </a>
+    <button class="btn btn-outline" onclick="window.print()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+      Print Card Sheet
+    </button>
+  </div>
+
+  <!-- 3D INTERACTIVE FLIP CARD PREVIEW -->
+  <div class="stage-3d">
+    <div class="flip-card" id="interactiveCard" onclick="flipCard()">
+      <div class="card-face card-front">
+        <img src="MIRR_Business_Card_Front.jpg" alt="MIRR Business Card Front">
+      </div>
+      <div class="card-face card-back">
+        <img src="MIRR_Business_Card_Back.jpg" alt="MIRR Business Card Back">
+      </div>
+    </div>
+    <div class="flip-hint">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 14l5-5-5-5"></path><path d="M4 20v-7a4 4 0 0 1 4-4h12"></path></svg>
+      Click on the card or use the button above to flip front and back in 3D
+    </div>
+  </div>
+
+  <!-- DUAL CARDS COMPARISON GRID -->
+  <section class="grid-section">
+    <div class="section-title">
+      <span>High-Definition Print Ready Views (600 DPI Master)</span>
+      <span style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase;">Standard CR80 &bull; 89 &times; 51 mm</span>
+    </div>
+
+    <div class="cards-grid">
+      <!-- FRONT SIDE -->
+      <div class="card-preview-box">
+        <div class="card-preview-header">
+          <h3>Front &bull; Executive Contact</h3>
+          <span class="card-tag">Front Face</span>
+        </div>
+        <div class="card-img-wrap">
+          <a href="MIRR_Business_Card_Front.jpg" target="_blank" title="Click to view full 2100x1200 resolution">
+            <img src="MIRR_Business_Card_Front.jpg" alt="Front Side View">
+          </a>
+        </div>
+      </div>
+
+      <!-- BACK SIDE -->
+      <div class="card-preview-box">
+        <div class="card-preview-header">
+          <h3>Back &bull; Services &amp; QR vCard</h3>
+          <span class="card-tag">Back Face</span>
+        </div>
+        <div class="card-img-wrap">
+          <a href="MIRR_Business_Card_Back.jpg" target="_blank" title="Click to view full 2100x1200 resolution">
+            <img src="MIRR_Business_Card_Back.jpg" alt="Back Side View">
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPECIFICATIONS -->
+    <div class="spec-grid">
+      <div class="spec-item">
+        <div class="spec-label">Dimensions</div>
+        <div class="spec-val">3.5" &times; 2.0" (88.9 &times; 50.8 mm)</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">Resolution</div>
+        <div class="spec-val">2100 &times; 1200 px (600 / 300 DPI)</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">Finish / Stock</div>
+        <div class="spec-val">Soft-Touch Matte + Gold Foil</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">Accreditations</div>
+        <div class="spec-val">PCAB Licensed &bull; SEC Registered</div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function flipCard() {
+      document.getElementById('interactiveCard').classList.toggle('flipped');
+    }
+  </script>
+</body>
+</html>
