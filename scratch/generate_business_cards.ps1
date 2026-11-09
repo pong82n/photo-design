@@ -33,8 +33,7 @@ public class BusinessCardGenerator {
                     }
                 }
 
-                // 2. Lightened Architectural Tint (Increased underlying background opacity / visibility)
-                // Reduced dark overlay from 235/195 to 110/70 (~30-45% opacity) so construction site is prominent
+                // 2. Lightened Architectural Tint (Vivid construction backdrop)
                 using (LinearGradientBrush darkGrad = new LinearGradientBrush(
                     new Point(0, 0), new Point(width, height),
                     Color.FromArgb(120, 6, 10, 20), Color.FromArgb(70, 10, 16, 28))) {
@@ -76,33 +75,58 @@ public class BusinessCardGenerator {
                     }
                 }
 
-                // 4. Logo & Company Identity (Top Left Zone with Crisp Dark Badge)
+                // 4. Logo & Company Identity (Top Left Zone)
                 float logoX = 130f;
                 float logoY = 120f;
-                float logoSize = 180f;
+                float logoSize = 175f;
 
                 // Backing plate for top brand identity
-                using (Brush topPlaque = new SolidBrush(Color.FromArgb(170, 8, 12, 22))) {
-                    using (GraphicsPath tp = GetRoundedRect(new RectangleF(logoX - 15, logoY - 15, 1000, logoSize + 30), 16f)) {
+                using (Brush topPlaque = new SolidBrush(Color.FromArgb(180, 8, 12, 22))) {
+                    using (GraphicsPath tp = GetRoundedRect(new RectangleF(logoX - 15, logoY - 15, 1020, logoSize + 30), 16f)) {
                         g.FillPath(topPlaque, tp);
                     }
                 }
-                using (Pen topBorder = new Pen(Color.FromArgb(60, 212, 175, 55), 1.2f)) {
-                    using (GraphicsPath tp = GetRoundedRect(new RectangleF(logoX - 15, logoY - 15, 1000, logoSize + 30), 16f)) {
+                using (Pen topBorder = new Pen(Color.FromArgb(80, 212, 175, 55), 1.4f)) {
+                    using (GraphicsPath tp = GetRoundedRect(new RectangleF(logoX - 15, logoY - 15, 1020, logoSize + 30), 16f)) {
                         g.DrawPath(topBorder, tp);
                     }
                 }
 
+                // --- PERFECT CIRCLE LOGO (STRICT CIRCULAR CLIPPING) ---
+                RectangleF circleRect = new RectangleF(logoX, logoY, logoSize, logoSize);
+
+                // Outer subtle glow ring
+                using (Brush glowBrush = new SolidBrush(Color.FromArgb(40, 212, 175, 55))) {
+                    g.FillEllipse(glowBrush, logoX - 6, logoY - 6, logoSize + 12, logoSize + 12);
+                }
+
+                // Circle Background (Clean Pearl White Medallion)
+                using (Brush circleBg = new SolidBrush(Color.FromArgb(250, 250, 252))) {
+                    g.FillEllipse(circleBg, circleRect);
+                }
+
+                // Strictly clip logo inside the circle
                 if (System.IO.File.Exists(logoPath)) {
                     using (Bitmap logoBmp = new Bitmap(logoPath)) {
-                        using (Brush badgeBg = new SolidBrush(Color.FromArgb(245, 15, 23, 42))) {
-                            g.FillEllipse(badgeBg, logoX - 6, logoY - 6, logoSize + 12, logoSize + 12);
+                        GraphicsState gState = g.Save();
+                        using (GraphicsPath clipPath = new GraphicsPath()) {
+                            clipPath.AddEllipse(circleRect);
+                            g.SetClip(clipPath);
+
+                            // Draw logo neatly centered with balanced padding inside the circle
+                            float pad = 10f;
+                            g.DrawImage(logoBmp, circleRect.X + pad, circleRect.Y + pad, logoSize - pad * 2, logoSize - pad * 2);
                         }
-                        using (Pen badgeBorder = new Pen(Color.FromArgb(240, 212, 175, 55), 3f)) {
-                            g.DrawEllipse(badgeBorder, logoX - 6, logoY - 6, logoSize + 12, logoSize + 12);
-                        }
-                        g.DrawImage(logoBmp, logoX, logoY, logoSize, logoSize);
+                        g.Restore(gState);
                     }
+                }
+
+                // Metallic Gold Bezel Rings around the circle
+                using (Pen goldRing = new Pen(Color.FromArgb(234, 190, 63), 3.5f)) {
+                    g.DrawEllipse(goldRing, circleRect);
+                }
+                using (Pen innerGoldRing = new Pen(Color.FromArgb(180, 212, 175, 55), 1.2f)) {
+                    g.DrawEllipse(innerGoldRing, circleRect.X + 4, circleRect.Y + 4, logoSize - 8, logoSize - 8);
                 }
 
                 // Company Name Typography
@@ -158,7 +182,7 @@ public class BusinessCardGenerator {
                 float lineSpacing = 82f;
 
                 // Translucent Architectural Plaque for Contact Info
-                using (Brush plaqueBg = new SolidBrush(Color.FromArgb(180, 8, 12, 22))) {
+                using (Brush plaqueBg = new SolidBrush(Color.FromArgb(185, 8, 12, 22))) {
                     using (GraphicsPath pPath = GetRoundedRect(new RectangleF(contactX - 25, contactY - 20, 720, 360), 16f)) {
                         g.FillPath(plaqueBg, pPath);
                     }
@@ -279,7 +303,7 @@ public class BusinessCardGenerator {
 
                 // 2. Left Zone: Large Logo & Identity with Backing Glass Plaque
                 float leftCenterX = 560f;
-                float logoSize = 240f;
+                float logoSize = 250f;
 
                 using (Brush leftPlaque = new SolidBrush(Color.FromArgb(180, 8, 12, 22))) {
                     using (GraphicsPath lp = GetRoundedRect(new RectangleF(leftCenterX - 380, 140f, 760f, 750f), 18f)) {
@@ -292,24 +316,44 @@ public class BusinessCardGenerator {
                     }
                 }
 
+                // --- PERFECT CIRCLE LOGO (STRICT CIRCULAR CLIPPING FOR BACK) ---
+                float ly = 230f;
+                RectangleF circleRectBack = new RectangleF(leftCenterX - logoSize / 2f, ly, logoSize, logoSize);
+
+                // Subtle outer gold glow
+                using (Brush logoGlow = new SolidBrush(Color.FromArgb(50, 212, 175, 55))) {
+                    g.FillEllipse(logoGlow, circleRectBack.X - 8, circleRectBack.Y - 8, logoSize + 16, logoSize + 16);
+                }
+
+                // Circle Background (Clean Pearl White Medallion)
+                using (Brush circleBg = new SolidBrush(Color.FromArgb(250, 250, 252))) {
+                    g.FillEllipse(circleBg, circleRectBack);
+                }
+
+                // Strictly clip logo inside the circle
                 if (System.IO.File.Exists(logoPath)) {
                     using (Bitmap logoBmp = new Bitmap(logoPath)) {
-                        float lx = leftCenterX - logoSize / 2f;
-                        float ly = 240f;
-                        
-                        using (Brush logoGlow = new SolidBrush(Color.FromArgb(50, 212, 175, 55))) {
-                            g.FillEllipse(logoGlow, lx - 30, ly - 30, logoSize + 60, logoSize + 60);
+                        GraphicsState gState = g.Save();
+                        using (GraphicsPath clipPath = new GraphicsPath()) {
+                            clipPath.AddEllipse(circleRectBack);
+                            g.SetClip(clipPath);
+
+                            float pad = 14f;
+                            g.DrawImage(logoBmp, circleRectBack.X + pad, circleRectBack.Y + pad, logoSize - pad * 2, logoSize - pad * 2);
                         }
-                        using (Brush logoBg = new SolidBrush(Color.FromArgb(245, 15, 23, 40))) {
-                            g.FillEllipse(logoBg, lx - 8, ly - 8, logoSize + 16, logoSize + 16);
-                        }
-                        using (Pen logoBorder = new Pen(Color.FromArgb(240, 212, 175, 55), 3.5f)) {
-                            g.DrawEllipse(logoBorder, lx - 8, ly - 8, logoSize + 16, logoSize + 16);
-                        }
-                        g.DrawImage(logoBmp, lx, ly, logoSize, logoSize);
+                        g.Restore(gState);
                     }
                 }
 
+                // Metallic Gold Bezel Rings around the circle
+                using (Pen logoBorder = new Pen(Color.FromArgb(234, 190, 63), 4f)) {
+                    g.DrawEllipse(logoBorder, circleRectBack);
+                }
+                using (Pen innerGoldRing = new Pen(Color.FromArgb(180, 212, 175, 55), 1.5f)) {
+                    g.DrawEllipse(innerGoldRing, circleRectBack.X + 5, circleRectBack.Y + 5, logoSize - 10, logoSize - 10);
+                }
+
+                // Typography under logo
                 using (Font brandFont = new Font("Arial", 46, FontStyle.Bold, GraphicsUnit.Pixel))
                 using (Font subFont = new Font("Arial", 20, FontStyle.Bold, GraphicsUnit.Pixel))
                 using (Font tagFont = new Font("Arial", 16, FontStyle.Regular, GraphicsUnit.Pixel))
@@ -317,9 +361,9 @@ public class BusinessCardGenerator {
                 using (Brush goldBrush = new SolidBrush(Color.FromArgb(234, 190, 63)))
                 using (Brush slateBrush = new SolidBrush(Color.FromArgb(180, 195, 215)))
                 using (StringFormat sfCenter = new StringFormat() { Alignment = StringAlignment.Center }) {
-                    g.DrawString("MIRR CONSTRUCTION", brandFont, whiteBrush, leftCenterX, 540f, sfCenter);
-                    g.DrawString("S E R V I C E S", subFont, goldBrush, leftCenterX, 600f, sfCenter);
-                    g.DrawString("ENGINEERING & ARCHITECTURAL SOLUTIONS", tagFont, slateBrush, leftCenterX, 645f, sfCenter);
+                    g.DrawString("MIRR CONSTRUCTION", brandFont, whiteBrush, leftCenterX, 550f, sfCenter);
+                    g.DrawString("S E R V I C E S", subFont, goldBrush, leftCenterX, 610f, sfCenter);
+                    g.DrawString("ENGINEERING & ARCHITECTURAL SOLUTIONS", tagFont, slateBrush, leftCenterX, 655f, sfCenter);
                 }
 
                 // Vertical Divider Line
@@ -480,4 +524,4 @@ $brainBack = "C:\Users\MIRR\.gemini\antigravity\brain\fb929fa1-f8b6-473d-90ea-cd
 Copy-Item $frontOut $brainFront -Force
 Copy-Item $backOut $brainBack -Force
 
-Write-Host "Business cards with high-opacity construction background generated successfully!"
+Write-Host "Business cards with perfectly circular-framed logo generated successfully!"
