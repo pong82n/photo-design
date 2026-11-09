@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Lumina Pavilion — Modern Luxury 3-Storey Residence | Cinematic Walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cinzel:wght@500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #080c14;
+    --gold: #d4af37;
+    --gold-light: #f3e5ab;
+    --gold-glow: rgba(212, 175, 55, 0.35);
+    --cyan: #38bdf8;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --panel-bg: rgba(15, 23, 42, 0.75);
+    --panel-border: rgba(255, 255, 255, 0.12);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    user-select: none;
+  }
+
+  body {
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* TOP CINEMATIC HEADER */
+  .cinematic-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    padding: 24px 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(8, 12, 20, 0.95) 0%, rgba(8, 12, 20, 0) 100%);
+    pointer-events: none;
+  }
+
+  .brand-lockup {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .brand-badge {
+    background: linear-gradient(135deg, #d4af37 0%, #aa820a 100%);
+    color: #0b0f17;
+    font-family: 'Cinzel', serif;
+    font-weight: 900;
+    font-size: 14px;
+    padding: 6px 14px;
+    border-radius: 4px;
+    letter-spacing: 2px;
+    box-shadow: 0 4px 16px var(--gold-glow);
+  }
+
+  .brand-titles h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #ffffff;
+    text-transform: uppercase;
+  }
+
+  .brand-titles p {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .header-actions {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .pill-btn {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    backdrop-filter: blur(12px);
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+  }
+
+  .pill-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+  }
+
+  .pill-btn.active {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.25) 0%, rgba(212, 175, 55, 0.08) 100%);
+    border-color: var(--gold);
+    color: var(--gold-light);
+  }
+
+  /* MAIN CINEMATIC CANVAS VIEWPORT */
+  .viewport-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: #000000;
+  }
+
+  .scene-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1.4s cubic-bezier(0.25, 1, 0.5, 1), visibility 1.4s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .scene-slide.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .scene-image-wrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .scene-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.05);
+    will-change: transform;
+    transition: transform 12s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Dynamic Cinematic Camera Moves */
+  .scene-slide.active.pan-right .scene-image {
+    transform: scale(1.15) translate(2.5%, -1%);
+  }
+
+  .scene-slide.active.pan-left .scene-image {
+    transform: scale(1.15) translate(-2.5%, 1%);
+  }
+
+  .scene-slide.active.dolly-in .scene-image {
+    transform: scale(1.22) translateY(-1.5%);
+  }
+
+  .scene-slide.active.dolly-out .scene-image {
+    transform: scale(1.04) translateY(1%);
+  }
+
+  /* Cinematic Vignette & Letterbox */
+  .cinematic-vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    box-shadow: inset 0 0 160px rgba(0, 0, 0, 0.75);
+    background: radial-gradient(circle at center, transparent 40%, rgba(8, 12, 20, 0.45) 85%, rgba(8, 12, 20, 0.85) 100%);
+    z-index: 10;
+  }
+
+  /* SUBTITLE & ARCHITECTURAL HIGHLIGHT CARD */
+  .scene-info-overlay {
+    position: absolute;
+    bottom: 120px;
+    left: 48px;
+    z-index: 25;
+    max-width: 520px;
+    background: rgba(11, 16, 27, 0.78);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-left: 4px solid var(--gold);
+    border-radius: 12px;
+    padding: 24px 28px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+  }
+
+  .scene-slide.active .scene-info-overlay {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .scene-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .scene-tag::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 10px var(--gold);
+  }
+
+  .scene-title {
+    font-family: 'Cinzel', serif;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #ffffff;
+    margin: 8px 0 10px;
+  }
+
+  .scene-desc {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: #cbd5e1;
+    font-weight: 400;
+  }
+
+  .scene-meta-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .meta-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+  }
+
+  .meta-chip strong {
+    color: #ffffff;
+  }
+
+  /* BOTTOM TIMELINE & CINEMATIC CONTROLS BAR */
+  .cinematic-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    padding: 20px 48px 28px;
+    background: linear-gradient(to top, rgba(8, 12, 20, 0.98) 0%, rgba(8, 12, 20, 0.7) 60%, transparent 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* Progress Scrubber */
+  .timeline-bar-wrapper {
+    position: relative;
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  .timeline-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--gold) 0%, var(--cyan) 100%);
+    box-shadow: 0 0 12px var(--gold-glow);
+    transition: width 0.1s linear;
+  }
+
+  .footer-controls-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .playback-btn-group {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .ctrl-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .ctrl-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.08);
+  }
+
+  .ctrl-btn.play-btn {
+    width: 52px;
+    height: 52px;
+    background: linear-gradient(135deg, var(--gold) 0%, #b8860b 100%);
+    color: #0b0f17;
+    border: none;
+    box-shadow: 0 6px 20px var(--gold-glow);
+  }
+
+  .ctrl-btn.play-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 10px 28px rgba(212, 175, 55, 0.6);
+  }
+
+  /* FLOOR PLAN / SCENE THUMBNAIL SELECTOR */
+  .scenes-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(15, 23, 42, 0.6);
+    padding: 6px 8px;
+    border-radius: 14px;
+    border: 1px solid var(--panel-border);
+    backdrop-filter: blur(12px);
+  }
+
+  .scene-pill {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+  }
+
+  .scene-pill:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .scene-pill.active {
+    background: rgba(212, 175, 55, 0.15);
+    color: var(--gold-light);
+    border-color: rgba(212, 175, 55, 0.4);
+  }
+
+  .scene-pill .pill-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--text-secondary);
+  }
+
+  .scene-pill.active .pill-dot {
+    background: var(--gold);
+    box-shadow: 0 0 8px var(--gold);
+  }
+
+  /* SCRIPT & SPEC MODAL */
+  .script-drawer {
+    position: fixed;
+    top: 0;
+    right: -420px;
+    width: 400px;
+    height: 100vh;
+    background: rgba(11, 16, 27, 0.94);
+    backdrop-filter: blur(24px);
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+    z-index: 100;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: -20px 0 60px rgba(0, 0, 0, 0.8);
+    overflow-y: auto;
+  }
+
+  .script-drawer.open {
+    right: 0;
+  }
+
+  .drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .drawer-header h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    color: var(--gold-light);
+    letter-spacing: 1px;
+  }
+
+  .close-drawer-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  .script-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 14px;
+  }
+
+  .script-item-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .script-item-vo {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #e2e8f0;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+  <!-- TOP BRAND & CONTROLS -->
+  <header class="cinematic-header">
+    <div class="brand-lockup">
+      <div class="brand-badge">MIRR</div>
+      <div class="brand-titles">
+        <h1>The Lumina Pavilion</h1>
+        <p>Modern Luxury 3-Storey Residence • Architectural Walkthrough</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button class="pill-btn" id="audioToggleBtn" onclick="toggleAmbientAudio()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+        <span id="audioStatusText">Sound On</span>
+      </button>
+
+      <button class="pill-btn" onclick="toggleLightingMode()" id="lightingBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        <span id="lightingStatusText">Dusk View</span>
+      </button>
+
+      <button class="pill-btn" onclick="toggleScriptDrawer()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+        Voiceover Script
+      </button>
+
+      <button class="pill-btn" onclick="toggleFullScreen()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+        Fullscreen
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN SCENE VIEWPORT -->
+  <main class="viewport-container" id="viewport">
+    <div class="cinematic-vignette"></div>
+
+    <!-- SCENE 1: EXTERIOR FRONT ELEVATION (DAY) -->
+    <div class="scene-slide active pan-right" id="slide-0" data-index="0" data-duration="9">
+      <div class="scene-image-wrapper">
+        <img class="scene-image" src="Luxury_3Storey_House_Exterior_Day.jpg" alt="Exterior Facade Day">
+      </div>
+      <div class="scene-info-overlay">
+        <div class="scene-tag">Level 01 // Arrival &amp; Exterior Facade</div>
+        <h2 class="scene-title">Geometric Cantilevers &amp; Warm Teak</h2>
+        <p class="scene-desc">
+          An imposing 3-storey architectural masterwork featuring crisp white concrete cantilevered boxes, organic vertical teak battens, and expansive floor-to-ceiling glass curtain walls set against a minimalist tropical reflection pool.
+        </p>
+        <div class="scene-meta-chips">
+          <div class="meta-chip">Total GFA: <strong>685 sqm</strong></div>
+          <div class="meta-chip">Lot Size: <strong>550 sqm</strong></div>
+          <div class="meta-chip">Carpark: <strong>2-Car Luxury Carport</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENE 2: GROUND FLOOR GRAND LIVING & DINING -->
+    <div class="scene-slide dolly-in" id="slide-1" data-index="1" data-duration="10">
+      <div class="scene-image-wrapper">
+        <img class="scene-image" src="Luxury_3Storey_House_Ground_Living.jpg" alt="Ground Floor Double Height Living">
+      </div>
+      <div class="scene-info-overlay">
+        <div class="scene-tag">Level 01 // Grand Reception</div>
+        <h2 class="scene-title">Double-Height Great Room</h2>
+        <p class="scene-desc">
+          A dramatic 6-meter double-height atrium highlighted by an Italian bookmatched Calacatta marble linear fireplace, custom cascading ring chandelier, floating timber cantilevered staircase, and pocket doors opening seamlessly to the outdoor infinity pool.
+        </p>
+        <div class="scene-meta-chips">
+          <div class="meta-chip">Ceiling Height: <strong>6.0 Meters</strong></div>
+          <div class="meta-chip">Feature: <strong>Calacatta Bookmatched Marble</strong></div>
+          <div class="meta-chip">Outdoor: <strong>Direct Pool Lanai Access</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENE 3: 2ND FLOOR MASTER BEDROOM SUITE -->
+    <div class="scene-slide pan-left" id="slide-2" data-index="2" data-duration="9">
+      <div class="scene-image-wrapper">
+        <img class="scene-image" src="Luxury_3Storey_House_Master_Suite.jpg" alt="Second Floor Master Suite">
+      </div>
+      <div class="scene-info-overlay">
+        <div class="scene-tag">Level 02 // Private Master Sanctuary</div>
+        <h2 class="scene-title">Executive Suite &amp; Cantilevered Balcony</h2>
+        <p class="scene-desc">
+          A serene retreat adorned with fluted walnut acoustic wall paneling, warm concealed cove LED illumination, European white oak herringbone floors, glass-enclosed spa ensuite, and a private cantilevered terrace overlooking the gardens.
+        </p>
+        <div class="scene-meta-chips">
+          <div class="meta-chip">Flooring: <strong>White Oak Herringbone</strong></div>
+          <div class="meta-chip">En-Suite: <strong>Freestanding Soaking Tub</strong></div>
+          <div class="meta-chip">Terrace: <strong>Private Cantilevered Balcony</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENE 4: 3RD FLOOR ROOFTOP SKY LOUNGE -->
+    <div class="scene-slide dolly-out" id="slide-3" data-index="3" data-duration="10">
+      <div class="scene-image-wrapper">
+        <img class="scene-image" src="Luxury_3Storey_House_Rooftop_Lounge.jpg" alt="Third Floor Penthouse Rooftop Lounge">
+      </div>
+      <div class="scene-info-overlay">
+        <div class="scene-tag">Level 03 // Penthouse Sky Terrace</div>
+        <h2 class="scene-title">Rooftop Sunken Firepit &amp; Infinity Spa</h2>
+        <p class="scene-desc">
+          The pinnacle of modern living. A panoramic rooftop entertainment deck complete with a sunken circular conversation firepit, motorized louvered pergola, waterfall quartz cocktail bar, and a glass-edge infinity plunge spa overlooking the sunset horizon.
+        </p>
+        <div class="scene-meta-chips">
+          <div class="meta-chip">Feature: <strong>Sunken Natural Gas Firepit</strong></div>
+          <div class="meta-chip">Spa: <strong>Infinity Edge Plunge Jacuzzi</strong></div>
+          <div class="meta-chip">Pergola: <strong>Motorized Louvers</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENE 5: DRAMATIC TWILIGHT EXTERIOR ILLUMINATION -->
+    <div class="scene-slide pan-right" id="slide-4" data-index="4" data-duration="10">
+      <div class="scene-image-wrapper">
+        <img class="scene-image" src="Luxury_3Storey_House_Exterior_Night.jpg" alt="Dramatic Evening Twilight View">
+      </div>
+      <div class="scene-info-overlay">
+        <div class="scene-tag">Nightfall // Architectural Lighting</div>
+        <h2 class="scene-title">Twilight Illumination &amp; Water Caustics</h2>
+        <p class="scene-desc">
+          As night falls, the residence transforms into an architectural lantern. Warm 3000K linear grazers illuminate textured teak fins, underwater pool LEDs cast shimmering light reflections onto cantilevered soffits, and interior chandeliers glow through transparent facades.
+        </p>
+        <div class="scene-meta-chips">
+          <div class="meta-chip">Lighting: <strong>3000K Architectural LED</strong></div>
+          <div class="meta-chip">Pool: <strong>Underground Turquoise Illumination</strong></div>
+          <div class="meta-chip">Facade: <strong>Integrated Wall Grazers</strong></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- BOTTOM CINEMATIC CONTROLS & TIMELINE -->
+  <footer class="cinematic-footer">
+    <!-- Progress Timeline Bar -->
+    <div class="timeline-bar-wrapper" id="timelineWrapper" onclick="seekTimeline(event)">
+      <div class="timeline-bar-fill" id="timelineFill"></div>
+    </div>
+
+    <div class="footer-controls-row">
+      <!-- Playback Controls -->
+      <div class="playback-btn-group">
+        <button class="ctrl-btn" onclick="prevScene()" title="Previous Scene">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
+        </button>
+
+        <button class="ctrl-btn play-btn" id="playPauseBtn" onclick="togglePlayPause()" title="Play / Pause Walkthrough">
+          <svg id="playIcon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          <svg id="pauseIcon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+        </button>
+
+        <button class="ctrl-btn" onclick="nextScene()" title="Next Scene">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
+        </button>
+
+        <div style="font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--text-secondary); margin-left:8px;">
+          <span id="currentTimeDisplay" style="color:#ffffff;">00:00</span> / <span id="totalTimeDisplay">00:48</span>
+        </div>
+      </div>
+
+      <!-- Floor & Scene Jump Selector -->
+      <div class="scenes-selector">
+        <div class="scene-pill active" onclick="goToScene(0)">
+          <div class="pill-dot"></div>
+          <span>01. Facade Day</span>
+        </div>
+        <div class="scene-pill" onclick="goToScene(1)">
+          <div class="pill-dot"></div>
+          <span>02. Grand Living</span>
+        </div>
+        <div class="scene-pill" onclick="goToScene(2)">
+          <div class="pill-dot"></div>
+          <span>03. Master Suite</span>
+        </div>
+        <div class="scene-pill" onclick="goToScene(3)">
+          <div class="pill-dot"></div>
+          <span>04. Sky Lounge</span>
+        </div>
+        <div class="scene-pill" onclick="goToScene(4)">
+          <div class="pill-dot"></div>
+          <span>05. Twilight Glow</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT & VOICEOVER MODAL DRAWER -->
+  <div class="script-drawer" id="scriptDrawer">
+    <div class="drawer-header">
+      <h3>Director's Walkthrough Script</h3>
+      <button class="close-drawer-btn" onclick="toggleScriptDrawer()">&times;</button>
+    </div>
+
+    <div class="script-item">
+      <div class="script-item-time">SCENE 01 [00:00 - 00:09] • EXTERIOR ARRIVAL</div>
+      <div class="script-item-vo">
+        "Welcome to The Lumina Pavilion — a bespoke 3-storey contemporary sanctuary where geometric concrete cantilevers blend seamlessly with natural warm teak wood slats and glass."
+      </div>
+    </div>
+
+    <div class="script-item">
+      <div class="script-item-time">SCENE 02 [00:09 - 00:19] • GROUND FLOOR GREAT ROOM</div>
+      <div class="script-item-vo">
+        "Stepping inside, a soaring six-meter double-height atrium reveals bookmatched Calacatta marble, custom ring chandeliers, and fully retractable glass pocket doors that dissolve the boundary between living room and infinity pool."
+      </div>
+    </div>
+
+    <div class="script-item">
+      <div class="script-item-time">SCENE 03 [00:19 - 00:28] • 2ND FLOOR MASTER SUITE</div>
+      <div class="script-item-vo">
+        "Ascending the floating staircase to Level Two, the master sanctuary features tactile acoustic walnut fluting, European white oak herringbone floors, and a private cantilevered terrace overlooking the lush gardens."
+      </div>
+    </div>
+
+    <div class="script-item">
+      <div class="script-item-time">SCENE 04 [00:28 - 00:38] • 3RD FLOOR SKY LOUNGE</div>
+      <div class="script-item-vo">
+        "On the penthouse roof terrace, a sunken conversation firepit, motorized pergola, outdoor quartz cocktail bar, and infinity plunge spa create an unforgettable sunset entertainment venue."
+      </div>
+    </div>
+
+    <div class="script-item">
+      <div class="script-item-time">SCENE 05 [00:38 - 00:48] • TWILIGHT ILLUMINATION</div>
+      <div class="script-item-vo">
+        "At dusk, precision 3000K architectural lighting brings the villa alive — casting glowing caustics across the cantilevered soffits and transforming the residence into a glowing beacon of modern luxury."
+      </div>
+    </div>
+  </div>
+
+<script>
+  // SCENE CONFIGURATION
+  const scenes = [
+    { id: 0, title: "Exterior Facade (Day)", duration: 9 },
+    { id: 1, title: "Grand Double-Height Living", duration: 10 },
+    { id: 2, title: "Master Bedroom Suite", duration: 9 },
+    { id: 3, title: "Penthouse Sky Lounge & Spa", duration: 10 },
+    { id: 4, title: "Twilight Architectural Illumination", duration: 10 }
+  ];
+
+  let currentSceneIndex = 0;
+  let isPlaying = true;
+  let playbackTimer = null;
+  let sceneElapsedSeconds = 0;
+  let totalElapsedSeconds = 0;
+  const totalDuration = scenes.reduce((acc, s) => acc + s.duration, 0);
+
+  // Web Audio API Ambient Sound Synthesizer
+  let audioCtx = null;
+  let isAudioMuted = true; // start muted per browser autoplay policy
+  let ambientGain = null;
+
+  function initAmbientAudio() {
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      audioCtx = new AudioContext();
+
+      // Master gain
+      ambientGain = audioCtx.createGain();
+      ambientGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+      ambientGain.connect(audioCtx.destination);
+
+      // Create warm low drone (C major luxurious pad)
+      const freqs = [65.41, 130.81, 196.00, 261.63, 329.63]; // C2, C3, G3, C4, E4
+      freqs.forEach(freq => {
+        const osc = audioCtx.createOscillator();
+        const oscGain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        oscGain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        osc.connect(oscGain);
+        oscGain.connect(ambientGain);
+        osc.start();
+      });
+
+      // Subtle high shimmer
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(800, audioCtx.currentTime);
+
+      ambientGain.gain.exponentialRampToValueAtTime(0.08, audioCtx.currentTime + 3);
+      isAudioMuted = false;
+      document.getElementById('audioStatusText').innerText = "Sound On";
+      document.getElementById('audioToggleBtn').classList.add('active');
+    } catch(e) {
+      console.log('Audio init prevented:', e);
+    }
+  }
+
+  function toggleAmbientAudio() {
+    if (!audioCtx) {
+      initAmbientAudio();
+      return;
+    }
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+    isAudioMuted = !isAudioMuted;
+    if (isAudioMuted) {
+      ambientGain.gain.setValueAtTime(0, audioCtx.currentTime);
+      document.getElementById('audioStatusText').innerText = "Muted";
+      document.getElementById('audioToggleBtn').classList.remove('active');
+    } else {
+      ambientGain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      document.getElementById('audioStatusText').innerText = "Sound On";
+      document.getElementById('audioToggleBtn').classList.add('active');
+    }
+  }
+
+  function formatTime(sec) {
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60);
+    return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+  }
+
+  function updateTimeline() {
+    const percent = (totalElapsedSeconds / totalDuration) * 100;
+    document.getElementById('timelineFill').style.width = percent + '%';
+    document.getElementById('currentTimeDisplay').innerText = formatTime(totalElapsedSeconds);
+  }
+
+  function goToScene(index) {
+    currentSceneIndex = index;
+    sceneElapsedSeconds = 0;
+
+    // Calculate total elapsed up to this scene
+    totalElapsedSeconds = 0;
+    for (let i = 0; i < index; i++) {
+      totalElapsedSeconds += scenes[i].duration;
+    }
+
+    // Update scene slides
+    document.querySelectorAll('.scene-slide').forEach((slide, i) => {
+      slide.classList.remove('active');
+      if (i === index) {
+        slide.classList.add('active');
+      }
+    });
+
+    // Update scene pills
+    document.querySelectorAll('.scene-pill').forEach((pill, i) => {
+      pill.classList.remove('active');
+      if (i === index) pill.classList.add('active');
+    });
+
+    // Update Dusk View button text if last scene
+    if (index === 4) {
+      document.getElementById('lightingBtn').classList.add('active');
+      document.getElementById('lightingStatusText').innerText = "Day View";
+    } else {
+      document.getElementById('lightingBtn').classList.remove('active');
+      document.getElementById('lightingStatusText').innerText = "Dusk View";
+    }
+
+    updateTimeline();
+  }
+
+  function nextScene() {
+    const nextIdx = (currentSceneIndex + 1) % scenes.length;
+    goToScene(nextIdx);
+  }
+
+  function prevScene() {
+    const prevIdx = (currentSceneIndex - 1 + scenes.length) % scenes.length;
+    goToScene(prevIdx);
+  }
+
+  function togglePlayPause() {
+    isPlaying = !isPlaying;
+    const playIcon = document.getElementById('playIcon');
+    const pauseIcon = document.getElementById('pauseIcon');
+
+    if (isPlaying) {
+      playIcon.style.display = 'none';
+      pauseIcon.style.display = 'block';
+    } else {
+      playIcon.style.display = 'block';
+      pauseIcon.style.display = 'none';
+    }
+  }
+
+  function toggleLightingMode() {
+    if (currentSceneIndex === 4) {
+      goToScene(0); // switch back to Day
+    } else {
+      goToScene(4); // switch to Twilight
+    }
+  }
+
+  function toggleScriptDrawer() {
+    document.getElementById('scriptDrawer').classList.toggle('open');
+  }
+
+  function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  }
+
+  function seekTimeline(e) {
+    const rect = document.getElementById('timelineWrapper').getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const clickPercent = clickX / rect.width;
+    const targetSeconds = clickPercent * totalDuration;
+
+    let accumulated = 0;
+    for (let i = 0; i < scenes.length; i++) {
+      if (targetSeconds <= accumulated + scenes[i].duration) {
+        goToScene(i);
+        totalElapsedSeconds = targetSeconds;
+        sceneElapsedSeconds = targetSeconds - accumulated;
+        updateTimeline();
+        break;
+      }
+      accumulated += scenes[i].duration;
+    }
+  }
+
+  // Animation & Timeline loop
+  setInterval(() => {
+    if (!isPlaying) return;
+
+    sceneElapsedSeconds += 0.2;
+    totalElapsedSeconds += 0.2;
+
+    if (totalElapsedSeconds >= totalDuration) {
+      totalElapsedSeconds = 0;
+      goToScene(0);
+      return;
+    }
+
+    if (sceneElapsedSeconds >= scenes[currentSceneIndex].duration) {
+      nextScene();
+    } else {
+      updateTimeline();
+    }
+  }, 200);
+
+  // Initialize display
+  document.getElementById('totalTimeDisplay').innerText = formatTime(totalDuration);
+  document.getElementById('playIcon').style.display = 'none';
+  document.getElementById('pauseIcon').style.display = 'block';
+
+  // Keyboard navigation
+  window.addEventListener('keydown', (e) => {
+    if (e.code === 'Space') {
+      e.preventDefault();
+      togglePlayPause();
+    } else if (e.code === 'ArrowRight') {
+      nextScene();
+    } else if (e.code === 'ArrowLeft') {
+      prevScene();
+    } else if (e.code === 'KeyF') {
+      toggleFullScreen();
+    } else if (e.code === 'KeyM') {
+      toggleAmbientAudio();
+    }
+  });
+</script>
+</body>
+</html>
