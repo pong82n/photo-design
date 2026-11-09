@@ -113,7 +113,6 @@ public class BusinessCardGenerator {
                             clipPath.AddEllipse(circleRect);
                             g.SetClip(clipPath);
 
-                            // Draw logo neatly centered with balanced padding inside the circle
                             float pad = 10f;
                             g.DrawImage(logoBmp, circleRect.X + pad, circleRect.Y + pad, logoSize - pad * 2, logoSize - pad * 2);
                         }
@@ -148,7 +147,7 @@ public class BusinessCardGenerator {
                         textStartX, logoY + 120);
                 }
 
-                // 5. Employee Name & Designation (Left-Center Zone with drop shadow for extreme sharpness)
+                // 5. Employee Name & Designation
                 float personY = 485f;
                 using (Font nameFont = new Font("Arial", 62, FontStyle.Bold, GraphicsUnit.Pixel))
                 using (Font roleFont = new Font("Arial", 26, FontStyle.Bold, GraphicsUnit.Pixel))
@@ -193,19 +192,19 @@ public class BusinessCardGenerator {
                     }
                 }
 
-                using (Font contactFont = new Font("Arial", 23, FontStyle.Regular, GraphicsUnit.Pixel))
+                using (Font contactFont = new Font("Arial", 22, FontStyle.Regular, GraphicsUnit.Pixel))
                 using (Font labelFont = new Font("Arial", 15, FontStyle.Bold, GraphicsUnit.Pixel))
                 using (Brush labelBrush = new SolidBrush(Color.FromArgb(234, 190, 63)))
                 using (Brush valBrush = new SolidBrush(Color.FromArgb(250, 252, 255)))
                 using (Brush iconBg = new SolidBrush(Color.FromArgb(230, 18, 27, 44)))
                 using (Pen iconBorder = new Pen(Color.FromArgb(180, 212, 175, 55), 1.5f)) {
 
-                    string[] labels = { "PHONE / MOBILE", "OFFICIAL EMAIL", "WEB PORTFOLIO", "OFFICE HEADQUARTERS" };
+                    string[] labels = { "MOBILE PHONE", "OFFICIAL EMAIL", "WEB PORTFOLIO", "OFFICE ADDRESS" };
                     string[] values = {
-                        "+63 (917) 800-MIRR  /  (02) 8800-6477",
+                        "0936-958-0308  /  (02) 8800-MIRR",
                         "raffy.soguilon@mirrconstruction.ph",
                         "www.mirrconstruction.ph",
-                        "Kalibo, Aklan  •  Metro Manila, PH"
+                        "Builder Tower, Metro Manila, Philippines"
                     };
                     string[] glyphs = { "P", "@", "W", "A" };
 
@@ -465,7 +464,7 @@ public class BusinessCardGenerator {
                 // Bottom Tagline
                 using (Font footFont = new Font("Arial", 16, FontStyle.Bold, GraphicsUnit.Pixel))
                 using (Brush footBrush = new SolidBrush(Color.FromArgb(140, 160, 190))) {
-                    g.DrawString("WWW.MIRRCONSTRUCTION.PH  •  VERIFY@MIRRCONSTRUCTION.PH  •  ALL RIGHTS RESERVED", footFont, footBrush, 130f, height - 90f);
+                    g.DrawString("BUILDER TOWER, METRO MANILA, PHILIPPINES  •  TEL: (02) 8800-MIRR  •  MOBILE: 0936-958-0308", footFont, footBrush, 130f, height - 90f);
                 }
             }
 
@@ -524,4 +523,4 @@ $brainBack = "C:\Users\MIRR\.gemini\antigravity\brain\fb929fa1-f8b6-473d-90ea-cd
 Copy-Item $frontOut $brainFront -Force
 Copy-Item $backOut $brainBack -Force
 
-Write-Host "Business cards with perfectly circular-framed logo generated successfully!"
+Write-Host "Business cards updated with mobile 0936-958-0308 and Builder Tower address!"
