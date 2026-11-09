@@ -405,6 +405,79 @@
     box-shadow: 0 0 8px var(--gold);
   }
 
+  /* VIDEO MODAL OVERLAY */
+  .video-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.88);
+    backdrop-filter: blur(20px);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .video-modal-backdrop.open {
+    display: flex;
+  }
+
+  .video-modal-content {
+    max-width: 1100px;
+    width: 100%;
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .video-modal-header {
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0b0f17;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .video-modal-header h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    color: var(--gold-light);
+    letter-spacing: 1px;
+  }
+
+  .video-modal-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .video-modal-close:hover {
+    color: #ffffff;
+  }
+
+  .video-modal-body {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    background: #000;
+  }
+
+  .video-modal-body video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
   /* SCRIPT & SPEC MODAL */
   .script-drawer {
     position: fixed;
@@ -487,6 +560,16 @@
     </div>
 
     <div class="header-actions">
+      <a class="pill-btn active" href="Luxury_3Storey_House_Walkthrough.mp4" download style="text-decoration:none;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        <span>Download MP4 Video</span>
+      </a>
+
+      <button class="pill-btn" onclick="openVideoModal()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg>
+        <span>Play Walkthrough MP4</span>
+      </button>
+
       <button class="pill-btn" id="audioToggleBtn" onclick="toggleAmbientAudio()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
         <span id="audioStatusText">Sound On</span>
@@ -662,6 +745,22 @@
       </div>
     </div>
   </footer>
+
+  <!-- VIDEO PLAYER MODAL -->
+  <div class="video-modal-backdrop" id="videoModalBackdrop" onclick="handleBackdropClick(event)">
+    <div class="video-modal-content">
+      <div class="video-modal-header">
+        <h3>Master Architectural Walkthrough Video (1080p Full HD)</h3>
+        <button class="video-modal-close" onclick="closeVideoModal()">&times;</button>
+      </div>
+      <div class="video-modal-body">
+        <video id="masterWalkthroughVideo" controls preload="metadata" poster="Luxury_3Storey_House_Exterior_Day.jpg">
+          <source src="Luxury_3Storey_House_Walkthrough.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </div>
 
   <!-- SCRIPT & VOICEOVER MODAL DRAWER -->
   <div class="script-drawer" id="scriptDrawer">
@@ -862,6 +961,29 @@
       goToScene(0); // switch back to Day
     } else {
       goToScene(4); // switch to Twilight
+    }
+  }
+
+  function openVideoModal() {
+    const modal = document.getElementById('videoModalBackdrop');
+    const vid = document.getElementById('masterWalkthroughVideo');
+    modal.classList.add('open');
+    if (isPlaying) {
+      togglePlayPause(); // pause background web tour
+    }
+    vid.play().catch(() => {});
+  }
+
+  function closeVideoModal() {
+    const modal = document.getElementById('videoModalBackdrop');
+    const vid = document.getElementById('masterWalkthroughVideo');
+    modal.classList.remove('open');
+    vid.pause();
+  }
+
+  function handleBackdropClick(e) {
+    if (e.target.id === 'videoModalBackdrop') {
+      closeVideoModal();
     }
   }
 
