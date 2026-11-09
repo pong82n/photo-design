@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Villa Travertino — 250 sqm Unique Modern Luxury Residential House</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cinzel:wght@600;700;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-main: #090d16;
+    --bg-surface: #111827;
+    --bg-card: rgba(17, 24, 39, 0.7);
+    --gold: #d4af37;
+    --gold-light: #f5e7b2;
+    --gold-glow: rgba(212, 175, 55, 0.3);
+    --travertine: #e2dcd2;
+    --travertine-dark: #b8ac9c;
+    --cyan: #38bdf8;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --border: rgba(255, 255, 255, 0.1);
+    --border-gold: rgba(212, 175, 55, 0.35);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  body {
+    background: var(--bg-main);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-image: 
+      radial-gradient(circle at 10% 15%, rgba(212, 175, 55, 0.05) 0%, transparent 45%),
+      radial-gradient(circle at 90% 85%, rgba(56, 189, 248, 0.04) 0%, transparent 45%);
+  }
+
+  /* TOP NAVIGATION */
+  .top-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(9, 13, 22, 0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .brand-badge {
+    background: linear-gradient(135deg, #d4af37 0%, #aa820a 100%);
+    color: #090d16;
+    font-family: 'Cinzel', serif;
+    font-weight: 900;
+    font-size: 13px;
+    padding: 5px 12px;
+    border-radius: 4px;
+    letter-spacing: 2px;
+    box-shadow: 0 4px 14px var(--gold-glow);
+  }
+
+  .nav-titles h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #ffffff;
+  }
+
+  .nav-titles p {
+    font-size: 11px;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 10px;
+  }
+
+  .nav-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .nav-btn:hover, .nav-btn.active {
+    color: #ffffff;
+    background: rgba(212, 175, 55, 0.15);
+    border-color: var(--gold);
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* HERO SHOWCASE */
+  .hero-banner {
+    background: linear-gradient(180deg, rgba(17, 24, 39, 0.6) 0%, rgba(11, 16, 27, 0.9) 100%);
+    border: 1px solid var(--border-gold);
+    border-radius: 20px;
+    padding: 48px;
+    margin-bottom: 48px;
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 40px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-banner::after {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-content h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 38px;
+    line-height: 1.2;
+    color: #ffffff;
+    margin-bottom: 16px;
+  }
+
+  .hero-content h2 span {
+    color: var(--gold-light);
+    background: linear-gradient(135deg, #f5e7b2 0%, #d4af37 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-content p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #cbd5e1;
+    margin-bottom: 28px;
+  }
+
+  .hero-specs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .spec-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    border-left: 3px solid var(--gold);
+  }
+
+  .spec-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+  }
+
+  .spec-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-top: 4px;
+  }
+
+  .spec-value small {
+    font-size: 12px;
+    color: var(--gold-light);
+  }
+
+  .hero-media {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--border);
+  }
+
+  .hero-media img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  .hero-media:hover img {
+    transform: scale(1.03);
+  }
+
+  .media-floating-tag {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    background: rgba(9, 13, 22, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border-gold);
+    color: var(--gold-light);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 6px;
+    letter-spacing: 1px;
+  }
+
+  /* SECTION TITLE */
+  .section-header {
+    margin-bottom: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .section-header h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 24px;
+    color: #ffffff;
+    letter-spacing: 1.5px;
+  }
+
+  .section-header p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  /* 3D RENDERS GALLERY GRID */
+  .renders-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-bottom: 56px;
+  }
+
+  .render-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .render-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--gold);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+  }
+
+  .render-img-box {
+    position: relative;
+    width: 100%;
+    height: 320px;
+    overflow: hidden;
+  }
+
+  .render-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .render-card:hover .render-img-box img {
+    transform: scale(1.04);
+  }
+
+  .render-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: rgba(9, 13, 22, 0.85);
+    backdrop-filter: blur(8px);
+    color: var(--gold-light);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border-gold);
+    text-transform: uppercase;
+  }
+
+  .render-details {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .render-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+  }
+
+  .render-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #94a3b8;
+    margin-bottom: 14px;
+    flex-grow: 1;
+  }
+
+  .render-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .feature-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #cbd5e1;
+  }
+
+  /* 250 SQM SPATIAL PROGRAMMING & BLUEPRINT */
+  .blueprint-section {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 36px;
+    margin-bottom: 56px;
+  }
+
+  .tabs-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+  }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    padding: 8px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .tab-btn.active {
+    background: rgba(212, 175, 55, 0.15);
+    color: var(--gold-light);
+    border: 1px solid var(--border-gold);
+  }
+
+  .floor-content {
+    display: none;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .floor-content.active {
+    display: grid;
+  }
+
+  /* Architectural Schedule Table */
+  .schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .schedule-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--border-gold);
+  }
+
+  .schedule-table td {
+    padding: 12px 14px;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    color: #cbd5e1;
+  }
+
+  .schedule-table tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+    color: #ffffff;
+  }
+
+  .schedule-table td.area-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--gold-light);
+    text-align: right;
+  }
+
+  .total-row td {
+    font-weight: 800;
+    color: #ffffff !important;
+    border-top: 2px solid var(--gold);
+    border-bottom: none;
+  }
+
+  /* MATERIAL & LUXURY FINISHES MOODBOARD */
+  .materials-section {
+    margin-bottom: 56px;
+  }
+
+  .palette-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  .material-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    border-top: 4px solid var(--gold);
+    transition: transform 0.2s ease;
+  }
+
+  .material-card:hover {
+    transform: translateY(-3px);
+  }
+
+  .mat-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .mat-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+  }
+
+  .mat-desc {
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--text-secondary);
+  }
+
+  /* BILL OF QUANTITIES & SPEC SUMMARY */
+  .boq-box {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(15, 23, 42, 0.8) 100%);
+    border: 1px solid var(--border-gold);
+    border-radius: 16px;
+    padding: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .boq-info h4 {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    color: #ffffff;
+    margin-bottom: 6px;
+  }
+
+  .boq-info p {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+  }
+
+  .boq-meta {
+    display: flex;
+    gap: 24px;
+  }
+
+  .boq-stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .boq-stat span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+  }
+
+  .boq-stat strong {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    color: var(--gold-light);
+  }
+</style>
+</head>
+<body>
+
+  <!-- TOP NAVBAR -->
+  <nav class="top-navbar">
+    <div class="nav-brand">
+      <div class="brand-badge">MIRR</div>
+      <div class="nav-titles">
+        <h1>Villa Travertino</h1>
+        <p>250 sqm Modern Luxury Residential Masterpiece</p>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="#renders" class="nav-btn active">3D Renders</a>
+      <a href="#blueprint" class="nav-btn">Floor Plan (250 sqm)</a>
+      <a href="#materials" class="nav-btn">Finishes Palette</a>
+      <a href="#boq" class="nav-btn">Specs &amp; BOQ</a>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <!-- HERO SHOWCASE -->
+    <section class="hero-banner">
+      <div class="hero-content">
+        <h2>The <span>Biophilic Monolith</span><br>250 sqm Luxury Villa</h2>
+        <p>
+          A sculptural, highly bespoke 2-storey contemporary residence engineered precisely to a <strong>250 sqm Gross Floor Area</strong>. Juxtaposing curved honed silver travertine stone with cantilevered charred Shou Sugi Ban timber pavilions and seamless indoor-outdoor living around an open-air central Zen courtyard.
+        </p>
+
+        <div class="hero-specs-grid">
+          <div class="spec-card">
+            <div class="spec-label">Gross Floor Area</div>
+            <div class="spec-value">250.0 <small>sqm</small></div>
+          </div>
+          <div class="spec-card">
+            <div class="spec-label">Lot Requirement</div>
+            <div class="spec-value">300.0 <small>sqm</small></div>
+          </div>
+          <div class="spec-card">
+            <div class="spec-label">Bedrooms / Baths</div>
+            <div class="spec-value">3 <small>Beds</small> • 4 <small>Baths</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-media">
+        <img src="3D_Cutaway_Floor_Plan.jpg" alt="3D Architectural Cutaway Layout">
+        <div class="media-floating-tag">3D SPATIAL PROGRAMMING &bull; 250 SQM</div>
+      </div>
+    </section>
+
+    <!-- 3D RENDERS GALLERY -->
+    <section id="renders">
+      <div class="section-header">
+        <div>
+          <h3>Curated 3D Rendered Perspectives</h3>
+          <p>Photorealistic architectural visualizations showcasing materials, lighting, and spatial finishes</p>
+        </div>
+      </div>
+
+      <div class="renders-grid">
+        <!-- Render 1 -->
+        <div class="render-card">
+          <div class="render-img-box">
+            <img src="Luxury_3Storey_House_Exterior_Day.jpg" alt="Exterior Facade Day">
+            <div class="render-badge">01. Facade Concept</div>
+          </div>
+          <div class="render-details">
+            <h4 class="render-title">Sculptural Travertine &amp; Cantilevered Volumes</h4>
+            <p class="render-desc">
+              Geometric white concrete cantilevers accented with vertical teak battens and bronze aluminum framing. Floor-to-ceiling glass makes the upper master pavilion appear weightlessly suspended over the reflection pool.
+            </p>
+            <div class="render-features">
+              <span class="feature-pill">Honed Silver Travertine</span>
+              <span class="feature-pill">Charred Shou Sugi Ban</span>
+              <span class="feature-pill">Reflecting Moat</span>
+              <span class="feature-pill">2-Car Carport</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Render 2 -->
+        <div class="render-card">
+          <div class="render-img-box">
+            <img src="Modern_Interior_Render_Living_Dining.jpg" alt="Ground Floor Open Great Room">
+            <div class="render-badge">02. Ground Floor Living</div>
+          </div>
+          <div class="render-details">
+            <h4 class="render-title">Open-Concept Great Room &amp; Water Lanai</h4>
+            <p class="render-desc">
+              Expansive open living and dining area featuring Ceppo di Gré stone flooring, bespoke curved sectional seating, integrated vapor fireplace, and fully motorized pocket glass doors opening onto the lap pool deck.
+            </p>
+            <div class="render-features">
+              <span class="feature-pill">Ceppo di Gr&eacute; Tiles</span>
+              <span class="feature-pill">Pocket Glass Walls</span>
+              <span class="feature-pill">Vapor Linear Fireplace</span>
+              <span class="feature-pill">Infinity Lap Pool</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Render 3 -->
+        <div class="render-card">
+          <div class="render-img-box">
+            <img src="Luxury_3Storey_House_Ground_Living.jpg" alt="Double Height Atrium & Marble Wall">
+            <div class="render-badge">03. Double-Height Atrium</div>
+          </div>
+          <div class="render-details">
+            <h4 class="render-title">Calacatta Marble Feature Wall &amp; Floating Stair</h4>
+            <p class="render-desc">
+              Soaring ceiling atrium with bookmatched Italian Calacatta marble wall, custom cascading ring chandelier, and floating open-tread steel-and-timber staircase leading to the private upper mezzanine gallery.
+            </p>
+            <div class="render-features">
+              <span class="feature-pill">Bookmatched Calacatta</span>
+              <span class="feature-pill">Floating Timber Stair</span>
+              <span class="feature-pill">Ring Chandelier</span>
+              <span class="feature-pill">Mezzanine Bridge</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Render 4 -->
+        <div class="render-card">
+          <div class="render-img-box">
+            <img src="Luxury_3Storey_House_Master_Suite.jpg" alt="Master Sanctuary Suite">
+            <div class="render-badge">04. Master Suite Sanctuary</div>
+          </div>
+          <div class="render-details">
+            <h4 class="render-title">Master Sanctuary &amp; Cantilevered Garden Terrace</h4>
+            <p class="render-desc">
+              European white oak herringbone flooring, acoustic fluted walnut wall ribs with 2700K amber LED backlighting, smoked-glass spa ensuite with freestanding oval soaking tub, and a private glass-railed balcony.
+            </p>
+            <div class="render-features">
+              <span class="feature-pill">French White Oak</span>
+              <span class="feature-pill">Fluted Walnut Paneling</span>
+              <span class="feature-pill">Freestanding Stone Tub</span>
+              <span class="feature-pill">Private Balcony</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 250 SQM FLOOR PLAN & SPATIAL BREAKDOWN -->
+    <section id="blueprint" class="blueprint-section">
+      <div class="section-header">
+        <div>
+          <h3>Architectural Floor Plan Schedule (250 sqm GFA)</h3>
+          <p>Carefully apportioned spatial layout balancing luxurious entertaining with intimate private retreats</p>
+        </div>
+      </div>
+
+      <div class="tabs-bar">
+        <button class="tab-btn active" onclick="switchFloor('ground')">Level 01 — Ground Floor (132.0 sqm)</button>
+        <button class="tab-btn" onclick="switchFloor('upper')">Level 02 — Upper Private Floor (118.0 sqm)</button>
+      </div>
+
+      <!-- Ground Floor Schedule -->
+      <div class="floor-content active" id="floor-ground">
+        <div>
+          <table class="schedule-table">
+            <thead>
+              <tr>
+                <th>Space / Room Zone</th>
+                <th>Dimensions</th>
+                <th style="text-align:right;">Area (sqm)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2-Car Covered Portico / Carport</td>
+                <td>5.8m &times; 5.5m</td>
+                <td class="area-val">32.0</td>
+              </tr>
+              <tr>
+                <td>Entrance Foyer &amp; Floating Gallery</td>
+                <td>3.4m &times; 2.5m</td>
+                <td class="area-val">8.5</td>
+              </tr>
+              <tr>
+                <td>Central Glass Zen Courtyard Lightwell</td>
+                <td>3.0m &times; 4.0m</td>
+                <td class="area-val">12.0</td>
+              </tr>
+              <tr>
+                <td>Sunken Living Great Room Lounge</td>
+                <td>5.7m &times; 5.0m</td>
+                <td class="area-val">28.5</td>
+              </tr>
+              <tr>
+                <td>Dining Pavilion Zone</td>
+                <td>4.0m &times; 4.0m</td>
+                <td class="area-val">16.0</td>
+              </tr>
+              <tr>
+                <td>Show Kitchen with Quartzite Island</td>
+                <td>4.5m &times; 4.0m</td>
+                <td class="area-val">18.0</td>
+              </tr>
+              <tr>
+                <td>Prep Kitchen / Scullery &amp; Pantry</td>
+                <td>2.8m &times; 2.5m</td>
+                <td class="area-val">7.0</td>
+              </tr>
+              <tr>
+                <td>Designer Powder Room (Guest Bath)</td>
+                <td>2.0m &times; 2.0m</td>
+                <td class="area-val">4.0</td>
+              </tr>
+              <tr>
+                <td>Staff Quarters with En-Suite Bath</td>
+                <td>2.5m &times; 2.4m</td>
+                <td class="area-val">6.0</td>
+              </tr>
+              <tr class="total-row">
+                <td colspan="2">TOTAL LEVEL 01 GROSS FLOOR AREA</td>
+                <td class="area-val">132.0 sqm</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:12px; padding:24px; display:flex; flex-direction:column; justify-content:center;">
+          <h4 style="font-family:'Cinzel',serif; font-size:18px; color:var(--gold-light); margin-bottom:12px;">Ground Level Design Philosophy</h4>
+          <p style="font-size:13.5px; line-height:1.7; color:#cbd5e1; margin-bottom:16px;">
+            The 132 sqm ground level is organized around the <strong>12 sqm central glass Zen courtyard</strong>. This architectural lightwell floods the center of the home with natural daylight and foliage, creating sightlines from the sunken living lounge, dining pavilion, and show kitchen directly out to the reflection pool.
+          </p>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div style="background:rgba(0,0,0,0.3); padding:10px 14px; border-radius:8px; border-left:2px solid var(--gold);">
+              <div style="font-size:10px; color:var(--text-secondary); text-transform:uppercase;">Indoor / Outdoor Flow</div>
+              <strong style="font-size:13px; color:#ffffff;">Zero-Threshold Pocket Glass</strong>
+            </div>
+            <div style="background:rgba(0,0,0,0.3); padding:10px 14px; border-radius:8px; border-left:2px solid var(--gold);">
+              <div style="font-size:10px; color:var(--text-secondary); text-transform:uppercase;">Pool Connection</div>
+              <strong style="font-size:13px; color:#ffffff;">Direct Lanai &amp; Lap Pool</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upper Floor Schedule -->
+      <div class="floor-content" id="floor-upper">
+        <div>
+          <table class="schedule-table">
+            <thead>
+              <tr>
+                <th>Space / Room Zone</th>
+                <th>Dimensions</th>
+                <th style="text-align:right;">Area (sqm)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Master Bedroom Sanctuary</td>
+                <td>5.6m &times; 5.0m</td>
+                <td class="area-val">28.0</td>
+              </tr>
+              <tr>
+                <td>Master Walk-Through Dressing Wardrobe</td>
+                <td>3.6m &times; 3.5m</td>
+                <td class="area-val">12.5</td>
+              </tr>
+              <tr>
+                <td>Master 5-Piece Spa Ensuite Bathroom</td>
+                <td>4.0m &times; 3.5m</td>
+                <td class="area-val">14.0</td>
+              </tr>
+              <tr>
+                <td>Private Cantilevered Balcony Terrace</td>
+                <td>5.0m &times; 2.0m</td>
+                <td class="area-val">10.0</td>
+              </tr>
+              <tr>
+                <td>Junior Suite 01 with Private Bath</td>
+                <td>4.2m &times; 4.4m</td>
+                <td class="area-val">18.5</td>
+              </tr>
+              <tr>
+                <td>Junior Suite 02 with Private Bath</td>
+                <td>4.0m &times; 4.25m</td>
+                <td class="area-val">17.0</td>
+              </tr>
+              <tr>
+                <td>Mezzanine Family Lounge &amp; Study Nook</td>
+                <td>3.8m &times; 3.15m</td>
+                <td class="area-val">12.0</td>
+              </tr>
+              <tr>
+                <td>Linen &amp; Service Storage Gallery</td>
+                <td>2.4m &times; 2.5m</td>
+                <td class="area-val">6.0</td>
+              </tr>
+              <tr class="total-row">
+                <td colspan="2">TOTAL LEVEL 02 GROSS FLOOR AREA</td>
+                <td class="area-val">118.0 sqm</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:12px; padding:24px; display:flex; flex-direction:column; justify-content:center;">
+          <h4 style="font-family:'Cinzel',serif; font-size:18px; color:var(--gold-light); margin-bottom:12px;">Upper Sanctuary Philosophy</h4>
+          <p style="font-size:13.5px; line-height:1.7; color:#cbd5e1; margin-bottom:16px;">
+            The 118 sqm second floor is engineered for tranquility and privacy. The <strong>54.5 sqm Master Wing</strong> occupies the entire front wing with a private cantilevered terrace, boutique dressing gallery, and spa ensuite, while the two junior ensuite bedrooms share a central mezzanine lounge overlooking the courtyard below.
+          </p>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div style="background:rgba(0,0,0,0.3); padding:10px 14px; border-radius:8px; border-left:2px solid var(--gold);">
+              <div style="font-size:10px; color:var(--text-secondary); text-transform:uppercase;">Master Wing GFA</div>
+              <strong style="font-size:13px; color:#ffffff;">54.5 sqm Full Suite</strong>
+            </div>
+            <div style="background:rgba(0,0,0,0.3); padding:10px 14px; border-radius:8px; border-left:2px solid var(--gold);">
+              <div style="font-size:10px; color:var(--text-secondary); text-transform:uppercase;">Grand Total GFA</div>
+              <strong style="font-size:13px; color:var(--gold-light);">Exactly 250.0 sqm</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LUXURY MATERIAL & FINISHES PALETTE -->
+    <section id="materials" class="materials-section">
+      <div class="section-header">
+        <div>
+          <h3>Curated Luxury Finishes &amp; Material Palette</h3>
+          <p>Tactile, durable natural stones, metals, and timbers selected for longevity and understated luxury</p>
+        </div>
+      </div>
+
+      <div class="palette-grid">
+        <div class="material-card">
+          <div class="mat-tag">Facade &amp; Accents</div>
+          <div class="mat-name">Honed Silver Travertine</div>
+          <div class="mat-desc">Sourced from Tivoli, Italy. Unfilled honed natural veins provide warm texture and monumental presence on curved architectural exterior and interior walls.</div>
+        </div>
+
+        <div class="material-card">
+          <div class="mat-tag">Timber Exterior</div>
+          <div class="mat-name">Charred Shou Sugi Ban</div>
+          <div class="mat-desc">Traditional Japanese fire-treated cedar timber. Deep matte charcoal texture offering natural termite, fire, and rot resistance with zero chemical treatments.</div>
+        </div>
+
+        <div class="material-card">
+          <div class="mat-tag">Chef's Island</div>
+          <div class="mat-name">Emerald Patagonia Quartzite</div>
+          <div class="mat-desc">Bookmatched Brazilian natural quartzite with crystalline translucency, leathered finish, and integrated mitred waterfall edges.</div>
+        </div>
+
+        <div class="material-card">
+          <div class="mat-tag">Hardware &amp; Metal</div>
+          <div class="mat-name">Brushed Champagne Bronze</div>
+          <div class="mat-desc">Electro-anodized architectural aluminum fins, cabinet J-pulls, door hardware, and custom recessed lighting trims.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BOQ & SPECIFICATION SUMMARY -->
+    <section id="boq">
+      <div class="boq-box">
+        <div class="boq-info">
+          <h4>Villa Travertino — Architectural Executive Summary</h4>
+          <p>Designed and documented by MIRR Construction Services • Raffy T. Soguilon, Project In-Charge</p>
+        </div>
+        <div class="boq-meta">
+          <div class="boq-stat">
+            <span>Gross Floor Area</span>
+            <strong>250.0 sqm</strong>
+          </div>
+          <div class="boq-stat">
+            <span>Levels</span>
+            <strong>2 Storeys</strong>
+          </div>
+          <div class="boq-stat">
+            <span>Structural System</span>
+            <strong>Post-Tensioned Concrete</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+<script>
+  function switchFloor(floor) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.floor-content').forEach(fc => fc.classList.remove('active'));
+
+    if (floor === 'ground') {
+      document.querySelectorAll('.tab-btn')[0].classList.add('active');
+      document.getElementById('floor-ground').classList.add('active');
+    } else {
+      document.querySelectorAll('.tab-btn')[1].classList.add('active');
+      document.getElementById('floor-upper').classList.add('active');
+    }
+  }
+</script>
+</body>
+</html>
