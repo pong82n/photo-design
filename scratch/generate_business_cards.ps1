@@ -22,46 +22,37 @@ public class BusinessCardGenerator {
                 g.PixelOffsetMode = PixelOffsetMode.HighQuality;
                 g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
 
-                // 1. Draw Construction Site Background
+                // 1. Draw Construction Site Background (Vibrant & High Visibility)
                 if (System.IO.File.Exists(bgPath)) {
                     using (Bitmap bgBmp = new Bitmap(bgPath)) {
                         g.DrawImage(bgBmp, 0, 0, width, height);
                     }
                 } else {
-                    using (SolidBrush fallback = new SolidBrush(Color.FromArgb(10, 16, 28))) {
+                    using (SolidBrush fallback = new SolidBrush(Color.FromArgb(12, 18, 30))) {
                         g.FillRectangle(fallback, 0, 0, width, height);
                     }
                 }
 
-                // 2. High-End Architectural Gradient Overlay (Ensures Perfect Contrast & Legibility)
+                // 2. Lightened Architectural Tint (Increased underlying background opacity / visibility)
+                // Reduced dark overlay from 235/195 to 110/70 (~30-45% opacity) so construction site is prominent
                 using (LinearGradientBrush darkGrad = new LinearGradientBrush(
                     new Point(0, 0), new Point(width, height),
-                    Color.FromArgb(235, 8, 12, 22), Color.FromArgb(195, 14, 22, 38))) {
+                    Color.FromArgb(120, 6, 10, 20), Color.FromArgb(70, 10, 16, 28))) {
                     g.FillRectangle(darkGrad, 0, 0, width, height);
                 }
 
-                // Extra vignette over text zones
-                using (GraphicsPath textVignette = new GraphicsPath()) {
-                    textVignette.AddEllipse(-100, 200, 1300, 1100);
-                    using (PathGradientBrush pgb = new PathGradientBrush(textVignette)) {
-                        pgb.CenterColor = Color.FromArgb(190, 6, 10, 18);
+                // Localized text backing under the name zone for crisp contrast
+                using (GraphicsPath nameGlow = new GraphicsPath()) {
+                    nameGlow.AddEllipse(-50, 420, 1100, 450);
+                    using (PathGradientBrush pgb = new PathGradientBrush(nameGlow)) {
+                        pgb.CenterColor = Color.FromArgb(150, 4, 7, 14);
                         pgb.SurroundColors = new Color[] { Color.Transparent };
-                        g.FillPath(pgb, textVignette);
+                        g.FillPath(pgb, nameGlow);
                     }
                 }
 
-                // Warm Golden Construction Light Accent
-                using (GraphicsPath goldGlow = new GraphicsPath()) {
-                    goldGlow.AddEllipse(width - 700, -200, 900, 800);
-                    using (PathGradientBrush pgb2 = new PathGradientBrush(goldGlow)) {
-                        pgb2.CenterColor = Color.FromArgb(50, 212, 175, 55);
-                        pgb2.SurroundColors = new Color[] { Color.Transparent };
-                        g.FillPath(pgb2, goldGlow);
-                    }
-                }
-
-                // 3. Technical Blueprint CAD Overlay Lines (Civil Engineering Details)
-                using (Pen cadPen = new Pen(Color.FromArgb(28, 56, 189, 248), 1.2f)) {
+                // 3. Technical Blueprint CAD Overlay Lines (Cyan & Gold Civil Engineering Grid)
+                using (Pen cadPen = new Pen(Color.FromArgb(45, 56, 189, 248), 1.2f)) {
                     cadPen.DashStyle = DashStyle.Dash;
                     for (int x = 200; x < width; x += 300) {
                         g.DrawLine(cadPen, x, 0, x, height);
@@ -71,33 +62,44 @@ public class BusinessCardGenerator {
                     }
                 }
 
-                // Structural Truss / Diagonal Bracing Lines
-                using (Pen trussPen = new Pen(Color.FromArgb(22, 212, 175, 55), 1.5f)) {
+                // Diagonal Construction Trusses
+                using (Pen trussPen = new Pen(Color.FromArgb(35, 212, 175, 55), 1.8f)) {
                     g.DrawLine(trussPen, 1350, 0, 900, height);
                     g.DrawLine(trussPen, 1650, 0, 1200, height);
                 }
 
                 // Outer Card Hairline Border with Inner Margin
                 float margin = 45f;
-                using (Pen goldBorder = new Pen(Color.FromArgb(120, 212, 175, 55), 2.5f)) {
+                using (Pen goldBorder = new Pen(Color.FromArgb(180, 212, 175, 55), 2.5f)) {
                     using (GraphicsPath bPath = GetRoundedRect(new RectangleF(margin, margin, width - margin * 2, height - margin * 2), 24f)) {
                         g.DrawPath(goldBorder, bPath);
                     }
                 }
 
-                // 4. Logo & Company Identity (Top Left Zone)
+                // 4. Logo & Company Identity (Top Left Zone with Crisp Dark Badge)
                 float logoX = 130f;
-                float logoY = 125f;
+                float logoY = 120f;
                 float logoSize = 180f;
+
+                // Backing plate for top brand identity
+                using (Brush topPlaque = new SolidBrush(Color.FromArgb(170, 8, 12, 22))) {
+                    using (GraphicsPath tp = GetRoundedRect(new RectangleF(logoX - 15, logoY - 15, 1000, logoSize + 30), 16f)) {
+                        g.FillPath(topPlaque, tp);
+                    }
+                }
+                using (Pen topBorder = new Pen(Color.FromArgb(60, 212, 175, 55), 1.2f)) {
+                    using (GraphicsPath tp = GetRoundedRect(new RectangleF(logoX - 15, logoY - 15, 1000, logoSize + 30), 16f)) {
+                        g.DrawPath(topBorder, tp);
+                    }
+                }
 
                 if (System.IO.File.Exists(logoPath)) {
                     using (Bitmap logoBmp = new Bitmap(logoPath)) {
-                        // Circular badge background for logo
-                        using (Brush badgeBg = new SolidBrush(Color.FromArgb(240, 15, 23, 42))) {
-                            g.FillEllipse(badgeBg, logoX - 10, logoY - 10, logoSize + 20, logoSize + 20);
+                        using (Brush badgeBg = new SolidBrush(Color.FromArgb(245, 15, 23, 42))) {
+                            g.FillEllipse(badgeBg, logoX - 6, logoY - 6, logoSize + 12, logoSize + 12);
                         }
-                        using (Pen badgeBorder = new Pen(Color.FromArgb(220, 212, 175, 55), 3f)) {
-                            g.DrawEllipse(badgeBorder, logoX - 10, logoY - 10, logoSize + 20, logoSize + 20);
+                        using (Pen badgeBorder = new Pen(Color.FromArgb(240, 212, 175, 55), 3f)) {
+                            g.DrawEllipse(badgeBorder, logoX - 6, logoY - 6, logoSize + 12, logoSize + 12);
                         }
                         g.DrawImage(logoBmp, logoX, logoY, logoSize, logoSize);
                     }
@@ -108,8 +110,8 @@ public class BusinessCardGenerator {
                 using (Font subBrandFont = new Font("Arial", 19, FontStyle.Bold, GraphicsUnit.Pixel))
                 using (Brush whiteBrush = new SolidBrush(Color.FromArgb(255, 255, 255)))
                 using (Brush goldBrush = new SolidBrush(Color.FromArgb(234, 190, 63)))
-                using (Brush slateBrush = new SolidBrush(Color.FromArgb(148, 163, 184))) {
-                    float textStartX = logoX + logoSize + 45f;
+                using (Brush slateBrush = new SolidBrush(Color.FromArgb(180, 195, 215))) {
+                    float textStartX = logoX + logoSize + 35f;
                     g.DrawString("MIRR", brandFont, whiteBrush, textStartX, logoY + 15);
                     float mirrWidth = g.MeasureString("MIRR ", brandFont).Width;
                     g.DrawString("CONSTRUCTION", brandFont, goldBrush, textStartX + mirrWidth - 8, logoY + 15);
@@ -118,54 +120,61 @@ public class BusinessCardGenerator {
                     // Tagline
                     g.DrawString("ARCHITECTURAL DESIGN  •  GENERAL CONTRACTING  •  CIVIL ENGINEERING",
                         new Font("Arial", 15, FontStyle.Bold, GraphicsUnit.Pixel),
-                        new SolidBrush(Color.FromArgb(190, 203, 213, 225)),
+                        new SolidBrush(Color.FromArgb(210, 225, 240)),
                         textStartX, logoY + 120);
                 }
 
-                // 5. Employee Name & Designation (Left-Center Zone)
+                // 5. Employee Name & Designation (Left-Center Zone with drop shadow for extreme sharpness)
                 float personY = 485f;
                 using (Font nameFont = new Font("Arial", 62, FontStyle.Bold, GraphicsUnit.Pixel))
                 using (Font roleFont = new Font("Arial", 26, FontStyle.Bold, GraphicsUnit.Pixel))
                 using (Font divFont = new Font("Arial", 21, FontStyle.Regular, GraphicsUnit.Pixel))
+                using (Brush shadowBrush = new SolidBrush(Color.FromArgb(220, 0, 0, 0)))
                 using (Brush nameBrush = new SolidBrush(Color.FromArgb(255, 255, 255)))
-                using (Brush goldRoleBrush = new SolidBrush(Color.FromArgb(234, 190, 63)))
-                using (Brush divBrush = new SolidBrush(Color.FromArgb(160, 175, 200))) {
+                using (Brush goldRoleBrush = new SolidBrush(Color.FromArgb(245, 198, 68)))
+                using (Brush divBrush = new SolidBrush(Color.FromArgb(200, 215, 235))) {
+
+                    // Drop shadows behind text
+                    g.DrawString("RAFFY T. SOGUILON", nameFont, shadowBrush, 132f, personY + 2);
                     g.DrawString("RAFFY T. SOGUILON", nameFont, nameBrush, 130f, personY);
 
                     // Metallic Gold Accent Bar under Name
                     using (Brush barBrush = new LinearGradientBrush(
-                        new PointF(130f, personY + 80), new PointF(450f, personY + 80),
-                        Color.FromArgb(234, 190, 63), Color.Transparent)) {
-                        g.FillRectangle(barBrush, 130f, personY + 82, 420f, 4f);
+                        new PointF(130f, personY + 80), new PointF(480f, personY + 80),
+                        Color.FromArgb(245, 198, 68), Color.Transparent)) {
+                        g.FillRectangle(barBrush, 130f, personY + 82, 440f, 4.5f);
                     }
 
+                    g.DrawString("PROJECT IN-CHARGE", roleFont, shadowBrush, 132f, personY + 107);
                     g.DrawString("PROJECT IN-CHARGE", roleFont, goldRoleBrush, 130f, personY + 105);
+
+                    g.DrawString("Site Operations & Structural Engineering Division", divFont, shadowBrush, 132f, personY + 150);
                     g.DrawString("Site Operations & Structural Engineering Division", divFont, divBrush, 130f, personY + 148);
                 }
 
                 // 6. Contact Details Block (Right Column with Semi-Translucent Glass Plaque)
                 float contactX = 1240f;
-                float contactY = 470f;
+                float contactY = 465f;
                 float lineSpacing = 82f;
 
-                // Translucent Architectural Plate for Contact Info
-                using (Brush plaqueBg = new SolidBrush(Color.FromArgb(140, 10, 16, 28))) {
-                    using (GraphicsPath pPath = GetRoundedRect(new RectangleF(contactX - 25, contactY - 20, 720, 355), 14f)) {
+                // Translucent Architectural Plaque for Contact Info
+                using (Brush plaqueBg = new SolidBrush(Color.FromArgb(180, 8, 12, 22))) {
+                    using (GraphicsPath pPath = GetRoundedRect(new RectangleF(contactX - 25, contactY - 20, 720, 360), 16f)) {
                         g.FillPath(plaqueBg, pPath);
                     }
                 }
-                using (Pen plaqueBorder = new Pen(Color.FromArgb(50, 212, 175, 55), 1.5f)) {
-                    using (GraphicsPath pPath = GetRoundedRect(new RectangleF(contactX - 25, contactY - 20, 720, 355), 14f)) {
+                using (Pen plaqueBorder = new Pen(Color.FromArgb(120, 212, 175, 55), 1.8f)) {
+                    using (GraphicsPath pPath = GetRoundedRect(new RectangleF(contactX - 25, contactY - 20, 720, 360), 16f)) {
                         g.DrawPath(plaqueBorder, pPath);
                     }
                 }
 
                 using (Font contactFont = new Font("Arial", 23, FontStyle.Regular, GraphicsUnit.Pixel))
                 using (Font labelFont = new Font("Arial", 15, FontStyle.Bold, GraphicsUnit.Pixel))
-                using (Brush labelBrush = new SolidBrush(Color.FromArgb(212, 175, 55)))
-                using (Brush valBrush = new SolidBrush(Color.FromArgb(240, 245, 250)))
-                using (Brush iconBg = new SolidBrush(Color.FromArgb(200, 18, 27, 44)))
-                using (Pen iconBorder = new Pen(Color.FromArgb(100, 212, 175, 55), 1.5f)) {
+                using (Brush labelBrush = new SolidBrush(Color.FromArgb(234, 190, 63)))
+                using (Brush valBrush = new SolidBrush(Color.FromArgb(250, 252, 255)))
+                using (Brush iconBg = new SolidBrush(Color.FromArgb(230, 18, 27, 44)))
+                using (Pen iconBorder = new Pen(Color.FromArgb(180, 212, 175, 55), 1.5f)) {
 
                     string[] labels = { "PHONE / MOBILE", "OFFICIAL EMAIL", "WEB PORTFOLIO", "OFFICE HEADQUARTERS" };
                     string[] values = {
@@ -196,20 +205,20 @@ public class BusinessCardGenerator {
 
                 // 7. Bottom Construction Status Strip
                 float botY = height - 120f;
-                using (Brush stripBg = new SolidBrush(Color.FromArgb(220, 10, 15, 26))) {
+                using (Brush stripBg = new SolidBrush(Color.FromArgb(200, 8, 12, 22))) {
                     g.FillRectangle(stripBg, 130f, botY, width - 260f, 50f);
                 }
-                using (Pen stripBorder = new Pen(Color.FromArgb(60, 212, 175, 55), 1f)) {
+                using (Pen stripBorder = new Pen(Color.FromArgb(120, 212, 175, 55), 1.2f)) {
                     g.DrawRectangle(stripBorder, 130f, botY, width - 260f, 50f);
                 }
 
                 using (Font footFont = new Font("Arial", 16, FontStyle.Bold, GraphicsUnit.Pixel))
-                using (Brush footBrush = new SolidBrush(Color.FromArgb(148, 163, 184)))
+                using (Brush footBrush = new SolidBrush(Color.FromArgb(180, 195, 215)))
                 using (Brush greenDot = new SolidBrush(Color.FromArgb(34, 197, 94))) {
                     g.FillEllipse(greenDot, 155f, botY + 19, 12, 12);
                     g.DrawString("OFFICIAL CREDENTIAL  •  MIRR CONSTRUCTION SERVICES  •  PROJECT OPERATIONS", footFont, footBrush, 180f, botY + 15);
                     
-                    using (Brush goldTag = new SolidBrush(Color.FromArgb(212, 175, 55))) {
+                    using (Brush goldTag = new SolidBrush(Color.FromArgb(234, 190, 63))) {
                         string regText = "PCAB LICENSED  |  SEC REG. 2026";
                         float regW = g.MeasureString(regText, footFont).Width;
                         g.DrawString(regText, footFont, goldTag, width - 130f - regW - 25f, botY + 15);
@@ -234,28 +243,27 @@ public class BusinessCardGenerator {
                 g.PixelOffsetMode = PixelOffsetMode.HighQuality;
                 g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
 
-                // 1. Draw Construction Background
+                // 1. Draw Construction Background (High Visibility)
                 if (System.IO.File.Exists(bgPath)) {
                     using (Bitmap bgBmp = new Bitmap(bgPath)) {
-                        // Mirror image for back side variety
                         bgBmp.RotateFlip(RotateFlipType.RotateNoneFlipX);
                         g.DrawImage(bgBmp, 0, 0, width, height);
                     }
                 } else {
-                    using (SolidBrush fallback = new SolidBrush(Color.FromArgb(10, 16, 28))) {
+                    using (SolidBrush fallback = new SolidBrush(Color.FromArgb(12, 18, 30))) {
                         g.FillRectangle(fallback, 0, 0, width, height);
                     }
                 }
 
-                // Dark atmospheric gradient overlay
+                // Lightened Dark Overlay so the construction background is vividly clear
                 using (LinearGradientBrush bgOverlay = new LinearGradientBrush(
                     new Point(0, 0), new Point(width, height),
-                    Color.FromArgb(240, 8, 12, 22), Color.FromArgb(215, 12, 18, 32))) {
+                    Color.FromArgb(130, 6, 10, 20), Color.FromArgb(90, 10, 16, 28))) {
                     g.FillRectangle(bgOverlay, 0, 0, width, height);
                 }
 
                 // Geometric architectural isometric lines
-                using (Pen geoPen = new Pen(Color.FromArgb(22, 212, 175, 55), 1.5f)) {
+                using (Pen geoPen = new Pen(Color.FromArgb(30, 212, 175, 55), 1.5f)) {
                     for (int i = -width; i < width * 2; i += 130) {
                         g.DrawLine(geoPen, i, 0, i + height, height);
                     }
@@ -263,29 +271,40 @@ public class BusinessCardGenerator {
 
                 // Outer Card Hairline Border
                 float margin = 45f;
-                using (Pen goldBorder = new Pen(Color.FromArgb(120, 212, 175, 55), 2.5f)) {
+                using (Pen goldBorder = new Pen(Color.FromArgb(180, 212, 175, 55), 2.5f)) {
                     using (GraphicsPath bPath = GetRoundedRect(new RectangleF(margin, margin, width - margin * 2, height - margin * 2), 24f)) {
                         g.DrawPath(goldBorder, bPath);
                     }
                 }
 
-                // 2. Left Zone: Large Logo & Identity
+                // 2. Left Zone: Large Logo & Identity with Backing Glass Plaque
                 float leftCenterX = 560f;
                 float logoSize = 240f;
+
+                using (Brush leftPlaque = new SolidBrush(Color.FromArgb(180, 8, 12, 22))) {
+                    using (GraphicsPath lp = GetRoundedRect(new RectangleF(leftCenterX - 380, 140f, 760f, 750f), 18f)) {
+                        g.FillPath(leftPlaque, lp);
+                    }
+                }
+                using (Pen leftBorder = new Pen(Color.FromArgb(100, 212, 175, 55), 1.5f)) {
+                    using (GraphicsPath lp = GetRoundedRect(new RectangleF(leftCenterX - 380, 140f, 760f, 750f), 18f)) {
+                        g.DrawPath(leftBorder, lp);
+                    }
+                }
 
                 if (System.IO.File.Exists(logoPath)) {
                     using (Bitmap logoBmp = new Bitmap(logoPath)) {
                         float lx = leftCenterX - logoSize / 2f;
-                        float ly = 310f;
+                        float ly = 240f;
                         
-                        using (Brush logoGlow = new SolidBrush(Color.FromArgb(30, 212, 175, 55))) {
+                        using (Brush logoGlow = new SolidBrush(Color.FromArgb(50, 212, 175, 55))) {
                             g.FillEllipse(logoGlow, lx - 30, ly - 30, logoSize + 60, logoSize + 60);
                         }
-                        using (Brush logoBg = new SolidBrush(Color.FromArgb(240, 15, 23, 40))) {
-                            g.FillEllipse(logoBg, lx - 10, ly - 10, logoSize + 20, logoSize + 20);
+                        using (Brush logoBg = new SolidBrush(Color.FromArgb(245, 15, 23, 40))) {
+                            g.FillEllipse(logoBg, lx - 8, ly - 8, logoSize + 16, logoSize + 16);
                         }
-                        using (Pen logoBorder = new Pen(Color.FromArgb(220, 212, 175, 55), 3.5f)) {
-                            g.DrawEllipse(logoBorder, lx - 10, ly - 10, logoSize + 20, logoSize + 20);
+                        using (Pen logoBorder = new Pen(Color.FromArgb(240, 212, 175, 55), 3.5f)) {
+                            g.DrawEllipse(logoBorder, lx - 8, ly - 8, logoSize + 16, logoSize + 16);
                         }
                         g.DrawImage(logoBmp, lx, ly, logoSize, logoSize);
                     }
@@ -295,28 +314,28 @@ public class BusinessCardGenerator {
                 using (Font subFont = new Font("Arial", 20, FontStyle.Bold, GraphicsUnit.Pixel))
                 using (Font tagFont = new Font("Arial", 16, FontStyle.Regular, GraphicsUnit.Pixel))
                 using (Brush whiteBrush = new SolidBrush(Color.FromArgb(255, 255, 255)))
-                using (Brush goldBrush = new SolidBrush(Color.FromArgb(220, 180, 60)))
-                using (Brush slateBrush = new SolidBrush(Color.FromArgb(148, 163, 184)))
+                using (Brush goldBrush = new SolidBrush(Color.FromArgb(234, 190, 63)))
+                using (Brush slateBrush = new SolidBrush(Color.FromArgb(180, 195, 215)))
                 using (StringFormat sfCenter = new StringFormat() { Alignment = StringAlignment.Center }) {
-                    g.DrawString("MIRR CONSTRUCTION", brandFont, whiteBrush, leftCenterX, 610f, sfCenter);
-                    g.DrawString("S E R V I C E S", subFont, goldBrush, leftCenterX, 670f, sfCenter);
-                    g.DrawString("ENGINEERING & ARCHITECTURAL SOLUTIONS", tagFont, slateBrush, leftCenterX, 715f, sfCenter);
+                    g.DrawString("MIRR CONSTRUCTION", brandFont, whiteBrush, leftCenterX, 540f, sfCenter);
+                    g.DrawString("S E R V I C E S", subFont, goldBrush, leftCenterX, 600f, sfCenter);
+                    g.DrawString("ENGINEERING & ARCHITECTURAL SOLUTIONS", tagFont, slateBrush, leftCenterX, 645f, sfCenter);
                 }
 
                 // Vertical Divider Line
-                using (Pen divPen = new Pen(Color.FromArgb(80, 212, 175, 55), 2f)) {
+                using (Pen divPen = new Pen(Color.FromArgb(120, 212, 175, 55), 2f)) {
                     g.DrawLine(divPen, 1050f, 160f, 1050f, height - 160f);
                 }
 
                 // 3. Right Zone: Core Capabilities (Inside Translucent Architectural Plaque)
                 float rightStartX = 1140f;
-                using (Brush plaqueBg = new SolidBrush(Color.FromArgb(150, 10, 16, 28))) {
-                    using (GraphicsPath pPath = GetRoundedRect(new RectangleF(rightStartX - 30, 140f, 860f, 740f), 14f)) {
+                using (Brush plaqueBg = new SolidBrush(Color.FromArgb(180, 8, 12, 22))) {
+                    using (GraphicsPath pPath = GetRoundedRect(new RectangleF(rightStartX - 30, 140f, 860f, 750f), 18f)) {
                         g.FillPath(plaqueBg, pPath);
                     }
                 }
-                using (Pen plaqueBorder = new Pen(Color.FromArgb(50, 212, 175, 55), 1.5f)) {
-                    using (GraphicsPath pPath = GetRoundedRect(new RectangleF(rightStartX - 30, 140f, 860f, 740f), 14f)) {
+                using (Pen plaqueBorder = new Pen(Color.FromArgb(100, 212, 175, 55), 1.5f)) {
+                    using (GraphicsPath pPath = GetRoundedRect(new RectangleF(rightStartX - 30, 140f, 860f, 750f), 18f)) {
                         g.DrawPath(plaqueBorder, pPath);
                     }
                 }
@@ -326,7 +345,7 @@ public class BusinessCardGenerator {
                 using (Font descFont = new Font("Arial", 17, FontStyle.Regular, GraphicsUnit.Pixel))
                 using (Brush goldTitle = new SolidBrush(Color.FromArgb(234, 190, 63)))
                 using (Brush itemWhite = new SolidBrush(Color.FromArgb(255, 255, 255)))
-                using (Brush itemDesc = new SolidBrush(Color.FromArgb(148, 163, 184))) {
+                using (Brush itemDesc = new SolidBrush(Color.FromArgb(180, 195, 215))) {
                     g.DrawString("CORE CAPABILITIES & SERVICES", titleFont, goldTitle, rightStartX, 175f);
 
                     string[,] services = {
@@ -339,7 +358,7 @@ public class BusinessCardGenerator {
                     float sy = 240f;
                     for (int i = 0; i < 4; i++) {
                         // Diamond bullet
-                        using (Brush bulletBrush = new SolidBrush(Color.FromArgb(212, 175, 55))) {
+                        using (Brush bulletBrush = new SolidBrush(Color.FromArgb(234, 190, 63))) {
                             PointF[] diamond = {
                                 new PointF(rightStartX + 10, sy + 10),
                                 new PointF(rightStartX + 20, sy),
@@ -371,7 +390,6 @@ public class BusinessCardGenerator {
                     }
                 }
 
-                // Draw realistic QR pattern
                 using (Brush qrPixel = new SolidBrush(Color.FromArgb(15, 23, 42))) {
                     DrawQRMarker(g, qrPixel, qrX + 16, qrY + 16, 46);
                     DrawQRMarker(g, qrPixel, qrX + qrSize - 62, qrY + 16, 46);
@@ -402,7 +420,7 @@ public class BusinessCardGenerator {
 
                 // Bottom Tagline
                 using (Font footFont = new Font("Arial", 16, FontStyle.Bold, GraphicsUnit.Pixel))
-                using (Brush footBrush = new SolidBrush(Color.FromArgb(110, 130, 160))) {
+                using (Brush footBrush = new SolidBrush(Color.FromArgb(140, 160, 190))) {
                     g.DrawString("WWW.MIRRCONSTRUCTION.PH  •  VERIFY@MIRRCONSTRUCTION.PH  •  ALL RIGHTS RESERVED", footFont, footBrush, 130f, height - 90f);
                 }
             }
@@ -462,4 +480,4 @@ $brainBack = "C:\Users\MIRR\.gemini\antigravity\brain\fb929fa1-f8b6-473d-90ea-cd
 Copy-Item $frontOut $brainFront -Force
 Copy-Item $backOut $brainBack -Force
 
-Write-Host "Business cards with construction background generated successfully!"
+Write-Host "Business cards with high-opacity construction background generated successfully!"
