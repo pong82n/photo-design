@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Clean Architectural 3D Renderer</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; overflow: hidden; }
+  body { background: #0b1120; width: 100vw; height: 100vh; }
+  #canvas-container { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+  .watermark {
+    position: absolute;
+    bottom: 24px;
+    right: 28px;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #f8fafc;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    z-index: 100;
+  }
+  .watermark strong { color: #d4af37; }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+<div id="canvas-container"></div>
+<div class="watermark" id="wm">
+  <strong>MIRR CONSTRUCTION SERVICES</strong> &nbsp;|&nbsp; Modern 60 sqm House Transformation
+</div>
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const viewType = urlParams.get('view') || 'street';
+  const isDusk = viewType === 'dusk';
+
+  const container = document.getElementById('canvas-container');
+
+  // Scene
+  const scene = new THREE.Scene();
+  const skyColor = isDusk ? 0x0c1427 : 0x87ceeb;
+  const groundColor = isDusk ? 0x050811 : 0xdde7f0;
+  scene.background = new THREE.Color(skyColor);
+  scene.fog = new THREE.FogExp2(skyColor, isDusk ? 0.012 : 0.008);
+
+  // Camera
+  const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+  // Renderer
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance", preserveDrawingBuffer: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(2.0); // 2x high resolution
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = isDusk ? 0.95 : 1.15;
+  container.appendChild(renderer.domElement);
+
+  // Lighting
+  const hemiLight = new THREE.HemisphereLight(
+    isDusk ? 0x384c75 : 0xf0f9ff,
+    isDusk ? 0x111827 : 0x64748b,
+    isDusk ? 0.4 : 0.8
+  );
+  scene.add(hemiLight);
+
+  const sunLight = new THREE.DirectionalLight(
+    isDusk ? 0xff7733 : 0xfffaed,
+    isDusk ? 0.6 : 1.45
+  );
+  sunLight.position.set(isDusk ? -14 : 18, isDusk ? 8 : 22, 16);
+  sunLight.castShadow = true;
+  sunLight.shadow.mapSize.width = 4096;
+  sunLight.shadow.mapSize.height = 4096;
+  sunLight.shadow.camera.near = 0.5;
+  sunLight.shadow.camera.far = 60;
+  const d = 16;
+  sunLight.shadow.camera.left = -d;
+  sunLight.shadow.camera.right = d;
+  sunLight.shadow.camera.top = d;
+  sunLight.shadow.camera.bottom = -d;
+  sunLight.shadow.bias = -0.0003;
+  scene.add(sunLight);
+
+  // Evening lights
+  if (isDusk) {
+    const spotCoords = [
+      [-0.8, 2.9, 2.8], [1.2, 2.9, 2.8],
+      [-0.8, 5.7, 1.8], [1.2, 5.7, 1.8],
+      [-2.8, 2.2, 3.2], [-2.8, 4.5, 3.2],
+      [-1.8, 2.2, 0.8], [0.4, 1.8, -1.0], [0.0, 4.5, -0.5]
+    ];
+    spotCoords.forEach(pos => {
+      const pl = new THREE.PointLight(0xffaa44, 2.5, 9, 1.8);
+      pl.position.set(pos[0], pos[1], pos[2]);
+      scene.add(pl);
+    });
+  }
+
+  // BUILD ENVIRONMENT & ROAD
+  // Subdivision Asphalt Road
+  const roadGeo = new THREE.PlaneGeometry(40, 14);
+  const roadMat = new THREE.MeshStandardMaterial({ color: isDusk ? 0x1a2230 : 0x334155, roughness: 0.85 });
+  const road = new THREE.Mesh(roadGeo, roadMat);
+  road.rotation.x = -Math.PI / 2;
+  road.position.set(0, -0.02, 11);
+  road.receiveShadow = true;
+  scene.add(road);
+
+  // Road White Center Line
+  const lineGeo = new THREE.PlaneGeometry(40, 0.2);
+  const lineMat = new THREE.MeshBasicMaterial({ color: 0xe2e8f0 });
+  const line = new THREE.Mesh(lineGeo, lineMat);
+  line.rotation.x = -Math.PI / 2;
+  line.position.set(0, -0.015, 11);
+  scene.add(line);
+
+  // Sidewalk Curb
+  const swGeo = new THREE.BoxGeometry(26, 0.18, 2.6);
+  const swMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.75 });
+  const sw = new THREE.Mesh(swGeo, swMat);
+  sw.position.set(0, 0.09, 5.3);
+  sw.receiveShadow = true;
+  scene.add(sw);
+
+  // 60 sqm Lot Base
+  const lotGeo = new THREE.BoxGeometry(6.2, 0.22, 10.2);
+  const lotMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.9 });
+  const lot = new THREE.Mesh(lotGeo, lotMat);
+  lot.position.set(0, 0.11, -0.1);
+  lot.receiveShadow = true;
+  scene.add(lot);
+
+  // Carport Pavers
+  const paverGeo = new THREE.PlaneGeometry(4.5, 4.2);
+  const paverMat = new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.65 });
+  const pavers = new THREE.Mesh(paverGeo, paverMat);
+  pavers.rotation.x = -Math.PI / 2;
+  pavers.position.set(-0.75, 0.225, 2.5);
+  pavers.receiveShadow = true;
+  scene.add(pavers);
+
+  // Right-side 1.5m Garden Grass
+  const gardenGeo = new THREE.PlaneGeometry(1.4, 9.8);
+  const gardenMat = new THREE.MeshStandardMaterial({ color: isDusk ? 0x0f3e1d : 0x15803d, roughness: 0.9 });
+  const garden = new THREE.Mesh(gardenGeo, gardenMat);
+  garden.rotation.x = -Math.PI / 2;
+  garden.position.set(2.2, 0.225, -0.1);
+  garden.receiveShadow = true;
+  scene.add(garden);
+
+  // White Stepping Stones
+  for (let z = 3.5; z >= -4; z -= 1.3) {
+    const stGeo = new THREE.BoxGeometry(0.75, 0.04, 0.55);
+    const stMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.5 });
+    const st = new THREE.Mesh(stGeo, stMat);
+    st.position.set(2.2, 0.25, z);
+    st.receiveShadow = true;
+    scene.add(st);
+  }
+
+  // BUILD HOUSE
+  const house = new THREE.Group();
+
+  const matWhiteStucco = new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.55 });
+  const matCharcoalStucco = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.65 });
+  const matFirewall = new THREE.MeshStandardMaterial({ color: 0xcfd8dc, roughness: 0.75 });
+  const matTeak = new THREE.MeshStandardMaterial({ color: 0xc26a15, roughness: 0.4 });
+  const matSoffit = new THREE.MeshStandardMaterial({ color: 0xa84a08, roughness: 0.35 });
+  const matGlass = new THREE.MeshPhysicalMaterial({
+    color: 0x38bdf8,
+    transparent: true,
+    opacity: 0.35,
+    roughness: 0.05,
+    metalness: 0.1,
+    transmission: 0.92,
+    ior: 1.52
+  });
+  const matBlackMetal = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.25, metalness: 0.85 });
+  const matGold = new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.25, metalness: 0.8 });
+
+  // 1. LEFT FIREWALL
+  const fwGeo = new THREE.BoxGeometry(0.24, 6.4, 8.4);
+  const fw = new THREE.Mesh(fwGeo, matFirewall);
+  fw.position.set(-2.95, 3.2, -0.6);
+  fw.castShadow = true;
+  fw.receiveShadow = true;
+  house.add(fw);
+
+  // Firewall Groove reveals
+  [-1.5, 0.8, 2.6].forEach(z => {
+    const grGeo = new THREE.BoxGeometry(0.04, 5.8, 0.04);
+    const grMat = new THREE.MeshStandardMaterial({ color: 0x475569 });
+    const gr = new THREE.Mesh(grGeo, grMat);
+    gr.position.set(-2.81, 3.2, z);
+    house.add(gr);
+  });
+
+  // Firewall Top Coping
+  const capGeo = new THREE.BoxGeometry(0.32, 0.08, 8.5);
+  const cap = new THREE.Mesh(capGeo, matBlackMetal);
+  cap.position.set(-2.95, 6.44, -0.6);
+  house.add(cap);
+
+  // 2. GROUND FLOOR RESIDENCE
+  const gfGeo = new THREE.BoxGeometry(4.4, 3.0, 5.2);
+  const gf = new THREE.Mesh(gfGeo, matWhiteStucco);
+  gf.position.set(-0.6, 1.5, -2.1);
+  gf.castShadow = true;
+  gf.receiveShadow = true;
+  house.add(gf);
+
+  // Front Entry Accent Wall
+  const gfaGeo = new THREE.BoxGeometry(2.0, 3.0, 0.12);
+  const gfa = new THREE.Mesh(gfaGeo, matCharcoalStucco);
+  gfa.position.set(-1.8, 1.5, 0.55);
+  gfa.castShadow = true;
+  house.add(gfa);
+
+  // Natural Teak Pivot Door
+  const doorGeo = new THREE.BoxGeometry(1.15, 2.45, 0.08);
+  const door = new THREE.Mesh(doorGeo, matTeak);
+  door.position.set(-1.9, 1.225, 0.62);
+  door.castShadow = true;
+  house.add(door);
+
+  // Matte Black Long Pull Handle
+  const pullGeo = new THREE.CylinderGeometry(0.016, 0.016, 1.35, 16);
+  const pull = new THREE.Mesh(pullGeo, matBlackMetal);
+  pull.position.set(-1.48, 1.25, 0.69);
+  house.add(pull);
+
+  // Ground Floor Picture Window Frame
+  const pwFrameGeo = new THREE.BoxGeometry(1.9, 1.65, 0.08);
+  const pwFrame = new THREE.Mesh(pwFrameGeo, matBlackMetal);
+  pwFrame.position.set(0.4, 1.55, 0.52);
+  house.add(pwFrame);
+
+  const pwGlass = new THREE.Mesh(new THREE.PlaneGeometry(1.75, 1.5), matGlass);
+  pwGlass.position.set(0.4, 1.55, 0.57);
+  house.add(pwGlass);
+
+  // 3. SECOND FLOOR
+  const ufGeo = new THREE.BoxGeometry(4.4, 3.0, 5.8);
+  const uf = new THREE.Mesh(ufGeo, matWhiteStucco);
+  uf.position.set(-0.6, 4.5, -1.8);
+  uf.castShadow = true;
+  uf.receiveShadow = true;
+  house.add(uf);
+
+  // Cantilevered Terrace Balcony Slab
+  const tGeo = new THREE.BoxGeometry(4.4, 0.28, 3.2);
+  const tSlab = new THREE.Mesh(tGeo, matCharcoalStucco);
+  tSlab.position.set(-0.6, 3.0, 2.1);
+  tSlab.castShadow = true;
+  tSlab.receiveShadow = true;
+  house.add(tSlab);
+
+  // Teak Soffit Under Terrace
+  const sofGeo = new THREE.PlaneGeometry(4.35, 3.15);
+  const sof = new THREE.Mesh(sofGeo, matSoffit);
+  sof.rotation.x = Math.PI / 2;
+  sof.position.set(-0.6, 2.855, 2.1);
+  house.add(sof);
+
+  // Outer Corner Support Post
+  const colGeo = new THREE.BoxGeometry(0.18, 2.85, 0.18);
+  const col = new THREE.Mesh(colGeo, matBlackMetal);
+  col.position.set(1.5, 1.425, 3.6);
+  col.castShadow = true;
+  house.add(col);
+
+  // Frameless Glass Balustrade (Front)
+  const gFrontGeo = new THREE.BoxGeometry(4.35, 1.05, 0.02);
+  const gFront = new THREE.Mesh(gFrontGeo, matGlass);
+  gFront.position.set(-0.6, 3.65, 3.68);
+  house.add(gFront);
+
+  const railFrontGeo = new THREE.BoxGeometry(4.35, 0.04, 0.05);
+  const railFront = new THREE.Mesh(railFrontGeo, matBlackMetal);
+  railFront.position.set(-0.6, 4.18, 3.68);
+  house.add(railFront);
+
+  // Frameless Glass Balustrade (Right Side)
+  const gSideGeo = new THREE.BoxGeometry(0.02, 1.05, 3.16);
+  const gSide = new THREE.Mesh(gSideGeo, matGlass);
+  gSide.position.set(1.58, 3.65, 2.1);
+  house.add(gSide);
+
+  const railSideGeo = new THREE.BoxGeometry(0.05, 0.04, 3.16);
+  const railSide = new THREE.Mesh(railSideGeo, matBlackMetal);
+  railSide.position.set(1.58, 4.18, 2.1);
+  house.add(railSide);
+
+  // Second Floor Sliding Glass Door to Terrace
+  const sldFrameGeo = new THREE.BoxGeometry(2.7, 2.45, 0.08);
+  const sldFrame = new THREE.Mesh(sldFrameGeo, matBlackMetal);
+  sldFrame.position.set(-1.3, 4.25, 0.52);
+  house.add(sldFrame);
+
+  const sldGlass = new THREE.Mesh(new THREE.PlaneGeometry(2.55, 2.3), matGlass);
+  sldGlass.position.set(-1.3, 4.25, 0.57);
+  house.add(sldGlass);
+
+  // Vertical Architectural Teak Louvers
+  for (let x = 0.35; x <= 1.45; x += 0.14) {
+    const louverGeo = new THREE.BoxGeometry(0.055, 2.7, 0.12);
+    const louver = new THREE.Mesh(louverGeo, matTeak);
+    louver.position.set(x, 4.35, 0.6);
+    louver.castShadow = true;
+    house.add(louver);
+  }
+
+  // 4. ROOF OVERHANG & PARAPET
+  const rfGeo = new THREE.BoxGeometry(4.7, 0.38, 7.2);
+  const rf = new THREE.Mesh(rfGeo, matCharcoalStucco);
+  rf.position.set(-0.6, 6.18, -1.4);
+  rf.castShadow = true;
+  house.add(rf);
+
+  // Teak Roof Fascia Trim
+  const rSofGeo = new THREE.PlaneGeometry(4.65, 1.4);
+  const rSof = new THREE.Mesh(rSofGeo, matSoffit);
+  rSof.rotation.x = Math.PI / 2;
+  rSof.position.set(-0.6, 5.98, 1.45);
+  house.add(rSof);
+
+  // Gold Line Accent
+  const goldGeo = new THREE.BoxGeometry(4.72, 0.03, 0.02);
+  const gold = new THREE.Mesh(goldGeo, matGold);
+  gold.position.set(-0.6, 6.22, 2.21);
+  house.add(gold);
+
+  // Modern Planters with Tropical Greenery
+  const p1Geo = new THREE.BoxGeometry(1.2, 0.45, 0.45);
+  const p1Mat = new THREE.MeshStandardMaterial({ color: 0x334155 });
+  const p1 = new THREE.Mesh(p1Geo, p1Mat);
+  p1.position.set(0.7, 3.35, 3.3);
+  house.add(p1);
+
+  const pPlantGeo = new THREE.SphereGeometry(0.28, 8, 8);
+  const pPlantMat = new THREE.MeshStandardMaterial({ color: 0x15803d, roughness: 0.8 });
+  [-0.3, 0.0, 0.3].forEach(px => {
+    const pln = new THREE.Mesh(pPlantGeo, pPlantMat);
+    pln.scale.set(1.2, 1.4, 1.1);
+    pln.position.set(0.7 + px, 3.65, 3.3);
+    house.add(pln);
+  });
+
+  scene.add(house);
+
+  // CAMERA PRESETS BASED ON VIEW PARAMETER
+  const target = new THREE.Vector3(-0.5, 3.0, 0.5);
+
+  if (viewType === 'street' || viewType === 'dusk') {
+    // 45° Heroic Eye-Level Perspective from Subdivision Street
+    camera.position.set(8.5, 2.6, 12.0);
+    target.set(-0.6, 2.8, 1.2);
+    document.getElementById('wm').innerHTML = '<strong>MIRR CONSTRUCTION SERVICES</strong> &nbsp;|&nbsp; 01 - Street Perspective (Daytime)';
+    if (isDusk) {
+      document.getElementById('wm').innerHTML = '<strong>MIRR CONSTRUCTION SERVICES</strong> &nbsp;|&nbsp; 04 - Twilight Dusk Architectural Render';
+    }
+  } else if (viewType === 'terrace') {
+    // Cantilevered Terrace & Louver Balcony Close-Up
+    camera.position.set(4.2, 4.4, 6.5);
+    target.set(-0.2, 3.7, 1.8);
+    document.getElementById('wm').innerHTML = '<strong>MIRR CONSTRUCTION SERVICES</strong> &nbsp;|&nbsp; 02 - Cantilevered Terrace & Louvers';
+  } else if (viewType === 'firewall') {
+    // Left-Side Firewall & Setback Elevation
+    camera.position.set(-11.0, 2.8, 4.0);
+    target.set(-2.8, 3.2, 0.5);
+    document.getElementById('wm').innerHTML = '<strong>MIRR CONSTRUCTION SERVICES</strong> &nbsp;|&nbsp; 03 - Left-Side Firewall (0.0m Setback, PD 1096)';
+  } else if (viewType === 'aerial') {
+    // Aerial Bird's-Eye Axonometric View
+    camera.position.set(14.0, 15.0, 15.0);
+    target.set(-0.5, 2.5, 0.0);
+    document.getElementById('wm').innerHTML = '<strong>MIRR CONSTRUCTION SERVICES</strong> &nbsp;|&nbsp; 05 - Aerial Axonometric Overview (60 sqm Lot)';
+  }
+
+  camera.lookAt(target);
+
+  // Render Once
+  renderer.render(scene, camera);
+
+  // Signal completion for headless capture
+  window.RENDER_READY = true;
+</script>
+</body>
+</html>
