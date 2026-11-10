@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modern 2-Storey House Transformation — 60 sqm Lot / 40 sqm Footprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cinzel:wght@700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-main: #090d16;
+    --bg-panel: rgba(17, 24, 39, 0.85);
+    --gold: #d4af37;
+    --gold-light: #f5e7b2;
+    --gold-glow: rgba(212, 175, 55, 0.35);
+    --cyan: #38bdf8;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --border: rgba(255, 255, 255, 0.12);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  body {
+    background: var(--bg-main);
+    color: var(--text-primary);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* 3D CANVAS CONTAINER */
+  #canvas-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  /* TOP HUD NAVIGATION */
+  .hud-top {
+    position: absolute;
+    top: 20px;
+    left: 24px;
+    right: 24px;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  .brand-badge {
+    pointer-events: auto;
+    background: var(--bg-panel);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .brand-tag {
+    background: linear-gradient(135deg, #d4af37 0%, #aa820a 100%);
+    color: #090d16;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    text-transform: uppercase;
+  }
+
+  .brand-text h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 1px;
+  }
+
+  .brand-text p {
+    font-size: 11.5px;
+    color: var(--text-secondary);
+  }
+
+  .hud-controls-top {
+    pointer-events: auto;
+    display: flex;
+    gap: 8px;
+  }
+
+  .hud-btn {
+    background: var(--bg-panel);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    color: #ffffff;
+    padding: 9px 16px;
+    border-radius: 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    transition: all 0.2s ease;
+  }
+
+  .hud-btn:hover, .hud-btn.active {
+    background: rgba(212, 175, 55, 0.2);
+    border-color: var(--gold);
+    color: var(--gold-light);
+    transform: translateY(-1px);
+  }
+
+  /* BOTTOM FLOATING CONTROLS */
+  .hud-bottom {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-panel);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    padding: 8px 14px;
+    border-radius: 40px;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+  }
+
+  .view-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .view-btn:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .view-btn.active {
+    background: linear-gradient(135deg, #d4af37 0%, #aa820a 100%);
+    color: #090d16;
+    font-weight: 700;
+  }
+
+  .sep {
+    width: 1px;
+    height: 18px;
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  /* SIDE INFO PANEL (EXPANDABLE) */
+  .side-panel {
+    position: absolute;
+    top: 90px;
+    right: 24px;
+    width: 380px;
+    max-height: calc(100vh - 130px);
+    overflow-y: auto;
+    z-index: 10;
+    background: var(--bg-panel);
+    backdrop-filter: blur(24px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s;
+  }
+
+  .side-panel.collapsed {
+    transform: translateX(420px);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
+
+  .panel-header h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--gold-light);
+    letter-spacing: 0.5px;
+  }
+
+  .close-panel-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 18px;
+    padding: 2px 6px;
+  }
+
+  .spec-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 12.5px;
+  }
+
+  .spec-row span {
+    color: var(--text-secondary);
+  }
+
+  .spec-row strong {
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  .feature-box {
+    background: rgba(0, 0, 0, 0.3);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 12px;
+    margin: 12px 0;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #cbd5e1;
+  }
+
+  .tag-pill {
+    display: inline-block;
+    background: rgba(56, 189, 248, 0.15);
+    color: var(--cyan);
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-right: 4px;
+    margin-top: 4px;
+  }
+
+  /* INTERACTION HINT */
+  .hint-tag {
+    position: absolute;
+    bottom: 84px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #94a3b8;
+    font-size: 11px;
+    padding: 4px 14px;
+    border-radius: 20px;
+    pointer-events: none;
+    letter-spacing: 0.5px;
+  }
+
+  /* CUSTOM SCROLLBAR */
+  .side-panel::-webkit-scrollbar {
+    width: 5px;
+  }
+  .side-panel::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+  }
+</style>
+<!-- Three.js and OrbitControls -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+
+  <!-- 3D VIEWPORT -->
+  <div id="canvas-container"></div>
+
+  <!-- TOP HUD -->
+  <header class="hud-top">
+    <div class="brand-badge">
+      <div class="brand-tag">3D Render</div>
+      <div class="brand-text">
+        <h1>Modern 2-Storey Renovation</h1>
+        <p>60 sqm Lot Area (6m &times; 10m) &bull; 40 sqm Ground Footprint &bull; Left Firewall &amp; Terrace</p>
+      </div>
+    </div>
+
+    <div class="hud-controls-top">
+      <button class="hud-btn" id="lightingBtn" onclick="toggleLighting()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <span id="lightingLabel">Evening Glow</span>
+      </button>
+      <button class="hud-btn active" id="panelToggleBtn" onclick="togglePanel()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        Specs &amp; Schedule
+      </button>
+    </div>
+  </header>
+
+  <!-- INTERACTION HINT -->
+  <div class="hint-tag">Drag left mouse to rotate &bull; Right mouse to pan &bull; Scroll wheel to zoom</div>
+
+  <!-- BOTTOM CAMERA PRESETS -->
+  <div class="hud-bottom">
+    <button class="view-btn active" onclick="setCameraView('street')">Street Perspective</button>
+    <button class="view-btn" onclick="setCameraView('terrace')">Terrace Balcony</button>
+    <button class="view-btn" onclick="setCameraView('firewall')">Left Firewall</button>
+    <button class="view-btn" onclick="setCameraView('birds')">Bird's Eye 3D</button>
+    <div class="sep"></div>
+    <button class="view-btn" onclick="resetCamera()">Reset Orbit</button>
+  </div>
+
+  <!-- SIDE SPECIFICATION PANEL -->
+  <aside class="side-panel" id="sidePanel">
+    <div class="panel-header">
+      <h3>Renovation Specifications</h3>
+      <button class="close-panel-btn" onclick="togglePanel()">&times;</button>
+    </div>
+
+    <div class="spec-row">
+      <span>Lot Area</span>
+      <strong>60.0 sqm (6.0m &times; 10.0m)</strong>
+    </div>
+    <div class="spec-row">
+      <span>Ground Floor Area</span>
+      <strong>38.5 sqm (+ 14.5 sqm Carport)</strong>
+    </div>
+    <div class="spec-row">
+      <span>Second Floor Area</span>
+      <strong>36.0 sqm (+ 11.5 sqm Terrace)</strong>
+    </div>
+    <div class="spec-row">
+      <span>Total Usable Area</span>
+      <strong style="color:var(--gold-light);">86.0 sqm GFA</strong>
+    </div>
+    <div class="spec-row">
+      <span>Left Boundary</span>
+      <strong>100% Solid Firewall (0.0m Setback)</strong>
+    </div>
+    <div class="spec-row">
+      <span>Right Boundary</span>
+      <strong>1.5m Open Garden &amp; Walkway</strong>
+    </div>
+    <div class="spec-row">
+      <span>Front Setback</span>
+      <strong>Covered Carport &amp; Porch</strong>
+    </div>
+
+    <div class="feature-box">
+      <strong style="color:#ffffff;">1. Left-Side Firewall Expansion:</strong><br>
+      Built flush on the left boundary line to maximize the ground-floor living/dining width and master bedroom upstairs. Compliant with PD 1096 fire-rating standards with concealed roof gutters.
+    </div>
+
+    <div class="feature-box">
+      <strong style="color:#ffffff;">2. Cantilevered Second-Floor Terrace:</strong><br>
+      A 11.5 sqm outdoor living balcony situated above the carport with smoked tempered glass railings, warm teak-clad ceiling soffit, and sliding glass wall access.
+    </div>
+
+    <div class="feature-box">
+      <strong style="color:#ffffff;">3. Modern Material Finishes:</strong><br>
+      Crisp off-white &amp; charcoal gray stucco, vertical composite wood (WPC) acoustic louvers, matte black powder-coated aluminum fenestration, and stamped concrete driveway pavers.
+    </div>
+
+    <div style="margin-top:14px;">
+      <span class="tag-pill">Japandi Modern</span>
+      <span class="tag-pill">Energy Efficient</span>
+      <span class="tag-pill">PD 1096 Firewall</span>
+      <span class="tag-pill">Low Maintenance</span>
+    </div>
+  </aside>
+
+<script>
+  let scene, camera, renderer, controls;
+  let houseGroup;
+  let sunLight, ambientLight, eveningLights = [];
+  let isEvening = false;
+
+  const container = document.getElementById('canvas-container');
+
+  function init() {
+    // 1. SCENE SETUP
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0f172a);
+    scene.fog = new THREE.FogExp2(0x0f172a, 0.015);
+
+    // 2. CAMERA SETUP
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(12, 7, 14);
+
+    // 3. RENDERER SETUP
+    renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.1;
+    container.appendChild(renderer.domElement);
+
+    // 4. ORBIT CONTROLS
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.maxPolarAngle = Math.PI / 2 - 0.02; // Don't go below ground
+    controls.minDistance = 4;
+    controls.maxDistance = 40;
+    controls.target.set(0, 3, 0);
+
+    // 5. LIGHTING SETUP
+    setupLighting();
+
+    // 6. BUILD 3D ARCHITECTURAL MODEL
+    buildGroundAndStreet();
+    buildModernHouse();
+
+    // 7. WINDOW RESIZE EVENT
+    window.addEventListener('resize', onWindowResize);
+
+    // 8. ANIMATION LOOP
+    animate();
+  }
+
+  function setupLighting() {
+    ambientLight = new THREE.AmbientLight(0xdbeafe, 0.65);
+    scene.add(ambientLight);
+
+    sunLight = new THREE.DirectionalLight(0xfff7ed, 1.3);
+    sunLight.position.set(16, 24, 18);
+    sunLight.castShadow = true;
+    sunLight.shadow.mapSize.width = 2048;
+    sunLight.shadow.mapSize.height = 2048;
+    sunLight.shadow.camera.near = 0.5;
+    sunLight.shadow.camera.far = 60;
+    const d = 16;
+    sunLight.shadow.camera.left = -d;
+    sunLight.shadow.camera.right = d;
+    sunLight.shadow.camera.top = d;
+    sunLight.shadow.camera.bottom = -d;
+    sunLight.shadow.bias = -0.0005;
+    scene.add(sunLight);
+
+    // Warm Architectural Point Lights (Ceiling spots & up-down sconces)
+    const spotCoords = [
+      [-0.8, 2.9, 3.2], // Terrace soffit spot 1
+      [1.2, 2.9, 3.2],  // Terrace soffit spot 2
+      [-0.8, 5.7, 3.2], // Roof eave spot 1
+      [1.2, 5.7, 3.2],  // Roof eave spot 2
+      [-2.3, 2.2, 4.3], // Firewall front up-down sconce
+      [0.0, 1.8, 1.2]   // Ground floor interior warm glow
+    ];
+
+    spotCoords.forEach(pos => {
+      const pl = new THREE.PointLight(0xffb84d, 0, 8, 2);
+      pl.position.set(pos[0], pos[1], pos[2]);
+      scene.add(pl);
+      eveningLights.push(pl);
+    });
+  }
+
+  function buildGroundAndStreet() {
+    // Subdivision Road
+    const roadGeo = new THREE.PlaneGeometry(36, 12);
+    const roadMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.85 });
+    const road = new THREE.Mesh(roadGeo, roadMat);
+    road.rotation.x = -Math.PI / 2;
+    road.position.set(0, -0.02, 10.5);
+    road.receiveShadow = true;
+    scene.add(road);
+
+    // Concrete Curb / Sidewalk
+    const sidewalkGeo = new THREE.BoxGeometry(24, 0.15, 2.5);
+    const sidewalkMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.8 });
+    const sidewalk = new THREE.Mesh(sidewalkGeo, sidewalkMat);
+    sidewalk.position.set(0, 0.075, 5.25);
+    sidewalk.receiveShadow = true;
+    scene.add(sidewalk);
+
+    // 60 sqm Lot Base (6m width x 10m depth)
+    const lotGeo = new THREE.BoxGeometry(6.2, 0.18, 10.2);
+    const lotMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.9 });
+    const lot = new THREE.Mesh(lotGeo, lotMat);
+    lot.position.set(0, 0.09, -0.1);
+    lot.receiveShadow = true;
+    scene.add(lot);
+
+    // Carport Pavers (Stamped concrete with modern linear dark joints)
+    const paverGeo = new THREE.PlaneGeometry(4.5, 4.2);
+    const paverMat = new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.7 });
+    const pavers = new THREE.Mesh(paverGeo, paverMat);
+    pavers.rotation.x = -Math.PI / 2;
+    pavers.position.set(-0.75, 0.19, 2.5);
+    pavers.receiveShadow = true;
+    scene.add(pavers);
+
+    // Right-side 1.5m Garden Pathway
+    const gardenGeo = new THREE.PlaneGeometry(1.4, 9.8);
+    const gardenMat = new THREE.MeshStandardMaterial({ color: 0x166534, roughness: 0.95 }); // Grass
+    const garden = new THREE.Mesh(gardenGeo, gardenMat);
+    garden.rotation.x = -Math.PI / 2;
+    garden.position.set(2.2, 0.19, -0.1);
+    garden.receiveShadow = true;
+    scene.add(garden);
+
+    // Right Perimeter Garden Stepping Stones
+    for (let z = 3; z >= -4; z -= 1.4) {
+      const stoneGeo = new THREE.BoxGeometry(0.8, 0.04, 0.6);
+      const stoneMat = new THREE.MeshStandardMaterial({ color: 0xcfd8dc, roughness: 0.6 });
+      const stone = new THREE.Mesh(stoneGeo, stoneMat);
+      stone.position.set(2.2, 0.22, z);
+      stone.receiveShadow = true;
+      scene.add(stone);
+    }
+  }
+
+  function buildModernHouse() {
+    houseGroup = new THREE.Group();
+
+    // MATERIALS
+    const wallWhiteMat = new THREE.MeshStandardMaterial({ color: 0xf1f5f9, roughness: 0.65 });
+    const wallCharcoalMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.7 });
+    const firewallMat = new THREE.MeshStandardMaterial({ color: 0xdde3ea, roughness: 0.8 }); // Stucco finish
+    const woodMat = new THREE.MeshStandardMaterial({ color: 0xb45309, roughness: 0.45 }); // Teak louvers
+    const woodSoffitMat = new THREE.MeshStandardMaterial({ color: 0x9a3412, roughness: 0.35 });
+    const glassMat = new THREE.MeshPhysicalMaterial({
+      color: 0x38bdf8,
+      transparent: true,
+      opacity: 0.35,
+      roughness: 0.05,
+      metalness: 0.1,
+      transmission: 0.9,
+      ior: 1.5
+    });
+    const blackMetalMat = new THREE.MeshStandardMaterial({ color: 0x090d16, roughness: 0.3, metalness: 0.8 });
+    const bronzeGoldMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.3, metalness: 0.7 });
+
+    // 1. LEFT-SIDE FULL-HEIGHT FIREWALL (Solid property line structure)
+    // Sits at X = -3.0 (Left boundary of 6m lot), Width = 0.22m, Height = 6.4m, Depth = 8.5m
+    const firewallGeo = new THREE.BoxGeometry(0.25, 6.4, 8.2);
+    const firewall = new THREE.Mesh(firewallGeo, firewallMat);
+    firewall.position.set(-2.95, 3.2, -0.6);
+    firewall.castShadow = true;
+    firewall.receiveShadow = true;
+    houseGroup.add(firewall);
+
+    // Modern architectural reveal groove on firewall
+    const grooveGeo = new THREE.BoxGeometry(0.04, 5.8, 0.04);
+    const grooveMat = new THREE.MeshStandardMaterial({ color: 0x64748b });
+    [-1.5, 0.5, 2.5].forEach(z => {
+      const groove = new THREE.Mesh(grooveGeo, grooveMat);
+      groove.position.set(-2.8, 3.2, z);
+      houseGroup.add(groove);
+    });
+
+    // Dark aluminum firewall coping capping on top
+    const capGeo = new THREE.BoxGeometry(0.32, 0.08, 8.3);
+    const cap = new THREE.Mesh(capGeo, blackMetalMat);
+    cap.position.set(-2.95, 6.44, -0.6);
+    houseGroup.add(cap);
+
+    // 2. GROUND FLOOR MAIN ENCLOSED VOLUME (Living, Dining, Kitchen, Bath)
+    // Positioned from X = -2.8 to X = 1.6 (Width = 4.4m), Depth = 5.2m (Z = 0.5 to -4.7)
+    const gfGeo = new THREE.BoxGeometry(4.4, 3.0, 5.2);
+    const gfMesh = new THREE.Mesh(gfGeo, wallWhiteMat);
+    gfMesh.position.set(-0.6, 1.5, -2.1);
+    gfMesh.castShadow = true;
+    gfMesh.receiveShadow = true;
+    houseGroup.add(gfMesh);
+
+    // Ground Floor Front Entry Accent Wall (Warm Charcoal Gray)
+    const gfFrontWallGeo = new THREE.BoxGeometry(2.0, 3.0, 0.15);
+    const gfFrontWall = new THREE.Mesh(gfFrontWallGeo, wallCharcoalMat);
+    gfFrontWall.position.set(-1.8, 1.5, 0.55);
+    gfFrontWall.castShadow = true;
+    houseGroup.add(gfFrontWall);
+
+    // Modern Natural Oak Pivot Door
+    const doorGeo = new THREE.BoxGeometry(1.1, 2.4, 0.08);
+    const door = new THREE.Mesh(doorGeo, woodMat);
+    door.position.set(-1.9, 1.2, 0.62);
+    door.castShadow = true;
+    houseGroup.add(door);
+
+    // Long Vertical Matte Black Pull Bar Handle
+    const handleGeo = new THREE.CylinderGeometry(0.015, 0.015, 1.3, 16);
+    const handle = new THREE.Mesh(handleGeo, blackMetalMat);
+    handle.position.set(-1.5, 1.2, 0.69);
+    houseGroup.add(handle);
+
+    // Ground Floor Large Picture Window
+    const winGeo = new THREE.BoxGeometry(1.8, 1.6, 0.1);
+    const winFrame = new THREE.Mesh(winGeo, blackMetalMat);
+    winFrame.position.set(0.4, 1.5, 0.52);
+    houseGroup.add(winFrame);
+
+    const winGlass = new THREE.Mesh(new THREE.PlaneGeometry(1.65, 1.45), glassMat);
+    winGlass.position.set(0.4, 1.5, 0.58);
+    houseGroup.add(winGlass);
+
+    // 3. SECOND-FLOOR STRUCTURE WITH CANTILEVERED TERRACE
+    // Enclosed Upper Floor
+    const ufGeo = new THREE.BoxGeometry(4.4, 3.0, 5.8);
+    const ufMesh = new THREE.Mesh(ufGeo, wallWhiteMat);
+    ufMesh.position.set(-0.6, 4.5, -1.8);
+    ufMesh.castShadow = true;
+    ufMesh.receiveShadow = true;
+    houseGroup.add(ufMesh);
+
+    // Cantilevered Terrace Balcony Slab (Extending forward over carport)
+    // Sits at Y = 3.0, Width = 4.4m, Depth = 3.2m (Z from 0.5 to 3.7)
+    const terraceSlabGeo = new THREE.BoxGeometry(4.4, 0.28, 3.2);
+    const terraceSlab = new THREE.Mesh(terraceSlabGeo, wallCharcoalMat);
+    terraceSlab.position.set(-0.6, 3.0, 2.1);
+    terraceSlab.castShadow = true;
+    terraceSlab.receiveShadow = true;
+    houseGroup.add(terraceSlab);
+
+    // Warm Teak Soffit Underneath Terrace (Visible from Carport)
+    const soffitGeo = new THREE.PlaneGeometry(4.35, 3.15);
+    const soffit = new THREE.Mesh(soffitGeo, woodSoffitMat);
+    soffit.rotation.x = Math.PI / 2;
+    soffit.position.set(-0.6, 2.85, 2.1);
+    houseGroup.add(soffit);
+
+    // Terrace Modern Slender Support Column on Right Edge
+    const colGeo = new THREE.BoxGeometry(0.2, 2.85, 0.2);
+    const col = new THREE.Mesh(colGeo, blackMetalMat);
+    col.position.set(1.5, 1.425, 3.6);
+    col.castShadow = true;
+    houseGroup.add(col);
+
+    // Terrace Balustrade: Front Glass Railing (Length = 4.4m, Height = 1.05m)
+    const glassRailFrontGeo = new THREE.BoxGeometry(4.36, 1.0, 0.05);
+    const glassRailFront = new THREE.Mesh(glassRailFrontGeo, glassMat);
+    glassRailFront.position.set(-0.6, 3.65, 3.68);
+    houseGroup.add(glassRailFront);
+
+    // Top Handrail Cap (Black metal)
+    const handrailFrontGeo = new THREE.BoxGeometry(4.4, 0.05, 0.08);
+    const handrailFront = new THREE.Mesh(handrailFrontGeo, blackMetalMat);
+    handrailFront.position.set(-0.6, 4.18, 3.68);
+    houseGroup.add(handrailFront);
+
+    // Terrace Right Glass Railing (Depth = 2.6m)
+    const glassRailRightGeo = new THREE.BoxGeometry(0.05, 1.0, 2.6);
+    const glassRailRight = new THREE.Mesh(glassRailRightGeo, glassMat);
+    glassRailRight.position.set(1.58, 3.65, 2.35);
+    houseGroup.add(glassRailRight);
+
+    const handrailRightGeo = new THREE.BoxGeometry(0.08, 0.05, 2.6);
+    const handrailRight = new THREE.Mesh(handrailRightGeo, blackMetalMat);
+    handrailRight.position.set(1.58, 4.18, 2.35);
+    houseGroup.add(handrailRight);
+
+    // Second Floor Sliding Glass Terrace Doors
+    const sliderFrameGeo = new THREE.BoxGeometry(2.8, 2.4, 0.08);
+    const sliderFrame = new THREE.Mesh(sliderFrameGeo, blackMetalMat);
+    sliderFrame.position.set(-1.0, 4.3, 1.12);
+    houseGroup.add(sliderFrame);
+
+    const sliderGlass = new THREE.Mesh(new THREE.PlaneGeometry(2.65, 2.25), glassMat);
+    sliderGlass.position.set(-1.0, 4.3, 1.17);
+    houseGroup.add(sliderGlass);
+
+    // Modern Vertical Timber Screening Louvers (Right Side of Upper Facade)
+    for (let x = 0.55; x <= 1.45; x += 0.15) {
+      const louverGeo = new THREE.BoxGeometry(0.06, 2.6, 0.08);
+      const louver = new THREE.Mesh(louverGeo, woodMat);
+      louver.position.set(x, 4.4, 1.15);
+      louver.castShadow = true;
+      houseGroup.add(louver);
+    }
+
+    // Terrace Outdoor Furniture: Modern Coffee Table & Chairs
+    const tableGeo = new THREE.CylinderGeometry(0.35, 0.35, 0.45, 24);
+    const tableMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.4 });
+    const table = new THREE.Mesh(tableGeo, tableMat);
+    table.position.set(-0.5, 3.35, 2.6);
+    table.castShadow = true;
+    houseGroup.add(table);
+
+    [-1.1, 0.1].forEach(x => {
+      const chairGeo = new THREE.BoxGeometry(0.45, 0.75, 0.45);
+      const chairMat = new THREE.MeshStandardMaterial({ color: 0xb45309 });
+      const chair = new THREE.Mesh(chairGeo, chairMat);
+      chair.position.set(x, 3.5, 2.6);
+      chair.castShadow = true;
+      houseGroup.add(chair);
+    });
+
+    // 4. MODERN FLAT PARAPET ROOF & CANTILEVER OVERHANG
+    const roofOverhangGeo = new THREE.BoxGeometry(4.6, 0.35, 6.2);
+    const roofOverhang = new THREE.Mesh(roofOverhangGeo, wallCharcoalMat);
+    roofOverhang.position.set(-0.6, 6.15, -1.6);
+    roofOverhang.castShadow = true;
+    houseGroup.add(roofOverhang);
+
+    // Underside Teak Trim on Roof Eave
+    const roofSoffitGeo = new THREE.PlaneGeometry(4.55, 1.2);
+    const roofSoffit = new THREE.Mesh(roofSoffitGeo, woodSoffitMat);
+    roofSoffit.rotation.x = Math.PI / 2;
+    roofSoffit.position.set(-0.6, 5.96, 1.0);
+    houseGroup.add(roofSoffit);
+
+    // Modern Gold Accent Line along Roofline
+    const goldTrimGeo = new THREE.BoxGeometry(4.62, 0.04, 0.04);
+    const goldTrim = new THREE.Mesh(goldTrimGeo, bronzeGoldMat);
+    goldTrim.position.set(-0.6, 6.25, 1.51);
+    houseGroup.add(goldTrim);
+
+    // 5. LANDSCAPING: Planters & Tropical Plants
+    // Modern Concrete Planter Box along Right Garden Walkway
+    const planterGeo = new THREE.BoxGeometry(0.4, 0.5, 3.2);
+    const planterMat = new THREE.MeshStandardMaterial({ color: 0x334155 });
+    const planter = new THREE.Mesh(planterGeo, planterMat);
+    planter.position.set(1.8, 0.35, 2.0);
+    planter.castShadow = true;
+    houseGroup.add(planter);
+
+    // Decorative Green Foliage in Planter
+    for (let z = 0.8; z <= 3.2; z += 0.5) {
+      const plantGeo = new THREE.ConeGeometry(0.25, 0.9, 8);
+      const plantMat = new THREE.MeshStandardMaterial({ color: 0x15803d, roughness: 0.9 });
+      const plant = new THREE.Mesh(plantGeo, plantMat);
+      plant.position.set(1.8, 0.85, z);
+      plant.castShadow = true;
+      houseGroup.add(plant);
+    }
+
+    // Modern Exterior Sconce Fixtures (Wall lights on firewall and entry)
+    const sconceMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, metalness: 0.9 });
+    [
+      [-2.8, 2.0, 3.8],
+      [-2.8, 4.5, 2.0],
+      [-0.7, 2.2, 0.6]
+    ].forEach(pos => {
+      const sconce = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.25, 0.08), sconceMat);
+      sconce.position.set(pos[0], pos[1], pos[2]);
+      houseGroup.add(sconce);
+    });
+
+    scene.add(houseGroup);
+  }
+
+  function setCameraView(view) {
+    document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+
+    let targetPos = new THREE.Vector3();
+    let lookTarget = new THREE.Vector3(0, 3, 0);
+
+    if (view === 'street') {
+      targetPos.set(4, 2.5, 9.5);
+      lookTarget.set(-0.5, 2.8, 1.0);
+    } else if (view === 'terrace') {
+      targetPos.set(0.5, 4.8, 5.8);
+      lookTarget.set(-0.6, 4.0, 2.0);
+    } else if (view === 'firewall') {
+      targetPos.set(-8.5, 3.5, 4.5);
+      lookTarget.set(-2.5, 3.2, 0.0);
+    } else if (view === 'birds') {
+      targetPos.set(11, 14, 12);
+      lookTarget.set(-0.5, 2.0, 0);
+    }
+
+    animateCamera(targetPos, lookTarget);
+  }
+
+  function resetCamera() {
+    document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.view-btn')[0].classList.add('active');
+    animateCamera(new THREE.Vector3(12, 7, 14), new THREE.Vector3(0, 3, 0));
+  }
+
+  function animateCamera(targetPosition, targetLookAt) {
+    const startPos = camera.position.clone();
+    const startTarget = controls.target.clone();
+    const startTime = performance.now();
+    const duration = 1000;
+
+    function step(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1.0);
+      const ease = 0.5 - Math.cos(progress * Math.PI) / 2;
+
+      camera.position.lerpVectors(startPos, targetPosition, ease);
+      controls.target.lerpVectors(startTarget, targetLookAt, ease);
+      controls.update();
+
+      if (progress < 1.0) {
+        requestAnimationFrame(step);
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  function toggleLighting() {
+    isEvening = !isEvening;
+    const btn = document.getElementById('lightingBtn');
+    const label = document.getElementById('lightingLabel');
+
+    if (isEvening) {
+      scene.background.setHex(0x050811);
+      scene.fog.color.setHex(0x050811);
+      ambientLight.color.setHex(0x1e293b);
+      ambientLight.intensity = 0.35;
+      sunLight.intensity = 0.15;
+      eveningLights.forEach(pl => pl.intensity = 2.4);
+      btn.classList.add('active');
+      label.innerText = "Daylight View";
+    } else {
+      scene.background.setHex(0x0f172a);
+      scene.fog.color.setHex(0x0f172a);
+      ambientLight.color.setHex(0xdbeafe);
+      ambientLight.intensity = 0.65;
+      sunLight.intensity = 1.3;
+      eveningLights.forEach(pl => pl.intensity = 0);
+      btn.classList.remove('active');
+      label.innerText = "Evening Glow";
+    }
+  }
+
+  function togglePanel() {
+    const panel = document.getElementById('sidePanel');
+    const btn = document.getElementById('panelToggleBtn');
+    panel.classList.toggle('collapsed');
+    btn.classList.toggle('active');
+  }
+
+  function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
+  function animate() {
+    requestAnimationFrame(animate);
+    controls.update();
+    renderer.render(scene, camera);
+  }
+
+  // Start after DOM load
+  window.onload = init;
+</script>
+</body>
+</html>
