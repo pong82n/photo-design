@@ -1,0 +1,7 @@
+file 'clip_0_intro.mp4'
+file 'clip_1_ext_day.mp4'
+file 'clip_2_living.mp4'
+file 'clip_3_suite.mp4'
+file 'clip_4_rooftop.mp4'
+file 'clip_5_ext_night.mp4'
+file 'clip_6_outro.mp4'
