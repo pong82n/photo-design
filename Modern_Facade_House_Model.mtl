@@ -1,0 +1,75 @@
+# Wavefront OBJ Material file for Modern Facade House Model
+# Project: MIRR Construction Services
+
+newmtl Architectural_Concrete
+Kd 0.72 0.75 0.78
+Ks 0.15 0.15 0.15
+Ns 20.0
+d 1.0
+
+newmtl Matte_Black_Metal
+Kd 0.11 0.12 0.13
+Ks 0.35 0.35 0.35
+Ns 60.0
+d 1.0
+
+newmtl Teak_Wood_Soffit
+Kd 0.65 0.42 0.24
+Ks 0.20 0.15 0.10
+Ns 30.0
+d 1.0
+
+newmtl Dark_Bronze_Fascia
+Kd 0.25 0.23 0.20
+Ks 0.30 0.30 0.30
+Ns 40.0
+d 1.0
+
+newmtl Warm_Sand_Stucco
+Kd 0.87 0.73 0.60
+Ks 0.05 0.05 0.05
+Ns 10.0
+d 1.0
+
+newmtl Clear_Balcony_Glass
+Kd 0.84 0.92 0.96
+Ks 0.90 0.95 1.00
+Ns 120.0
+d 0.30
+
+newmtl Reflective_Storefront_Glass
+Kd 0.75 0.82 0.86
+Ks 0.85 0.90 0.95
+Ns 100.0
+d 0.45
+
+newmtl Warm_LED_Light
+Kd 1.00 0.96 0.84
+Ke 1.00 0.94 0.78
+Ks 0.10 0.10 0.10
+Ns 10.0
+d 1.0
+
+newmtl Door_Pure_White
+Kd 0.98 0.98 0.98
+Ks 0.25 0.25 0.25
+Ns 50.0
+d 1.0
+
+newmtl Sidewalk_Concrete
+Kd 0.82 0.84 0.85
+Ks 0.08 0.08 0.08
+Ns 15.0
+d 1.0
+
+newmtl Patterned_Tile
+Kd 0.55 0.65 0.69
+Ks 0.20 0.20 0.20
+Ns 40.0
+d 1.0
+
+newmtl Olive_Greenery
+Kd 0.31 0.41 0.28
+Ks 0.05 0.05 0.05
+Ns 10.0
+d 1.0
